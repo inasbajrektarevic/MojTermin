@@ -1,0 +1,130 @@
+<section class="page">
+  <h1>Zaposlenici</h1>
+
+  <div class="staff-filter">
+    <label for="staff-search" class="staff-filter-label">Filtriraj zaposlenike</label>
+    <input
+      id="staff-search"
+      name="query"
+      class="search"
+      [(ngModel)]="query"
+      placeholder="Ime, pozicija ili email"
+      autocomplete="off"
+    />
+  </div>
+
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <input placeholder="Ime i prezime" formControlName="fullName" />
+    <input placeholder="Pozicija (opcionalno)" formControlName="title" />
+    <input placeholder="Telefon (opcionalno)" formControlName="phone" />
+    <input type="email" placeholder="Email (opcionalno)" formControlName="email" />
+    @if (editingId) {
+      <label class="active-box"><input type="checkbox" formControlName="isActive" /> Aktivan</label>
+    }
+
+    <div class="actions">
+      <button type="submit" [disabled]="saving">{{ saving ? 'Čuvanje...' : (editingId ? 'Sačuvaj izmjene' : 'Dodaj zaposlenika') }}</button>
+      @if (editingId) {
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">Otkaži</button>
+      }
+    </div>
+  </form>
+
+  <div class="table-wrap">
+    @if (loading) {
+      <p>Učitavanje...</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Ime</th>
+            <th>Pozicija</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (filteredRows.length) {
+            @for (row of filteredRows; track row.id) {
+              <tr>
+                <td>{{ row.fullName }}</td>
+                <td>{{ row.title || '-' }}</td>
+                <td>{{ row.email || '-' }}</td>
+                <td>{{ row.isActive ? 'Aktivan' : 'Neaktivan' }}</td>
+                <td class="actions">
+                  <button type="button" class="btn-secondary" (click)="edit(row)">Uredi</button>
+                  <button type="button" class="btn-secondary" (click)="openTimeOff(row)">Odsustva</button>
+                  <button type="button" class="btn-danger" (click)="remove(row.id)">Obriši</button>
+                </td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td colspan="5" class="empty-state">Nema zaposlenika.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  @if (selectedStaff) {
+    <section class="timeoff-card">
+      <div class="timeoff-head">
+        <h2>Time-off: {{ selectedStaff.fullName }}</h2>
+        <button type="button" class="btn-secondary" (click)="closeTimeOff()">Zatvori</button>
+      </div>
+      <form class="timeoff-form" [formGroup]="timeOffForm" (ngSubmit)="saveTimeOff()">
+        <div class="timeoff-field">
+          <label for="to-date-from" class="timeoff-lbl">Od datuma</label>
+          <input id="to-date-from" type="date" formControlName="dateFrom" />
+        </div>
+        <div class="timeoff-field">
+          <label for="to-date-to" class="timeoff-lbl">Do datuma</label>
+          <input id="to-date-to" type="date" formControlName="dateTo" />
+        </div>
+        <div class="timeoff-field timeoff-field-wide">
+          <label for="to-reason" class="timeoff-lbl">Razlog (opcionalno)</label>
+          <input id="to-reason" type="text" formControlName="reason" placeholder="npr. godišnji, bolovanje" />
+        </div>
+        <div class="timeoff-submit">
+          <button type="submit" [disabled]="timeOffSaving">{{ timeOffSaving ? 'Čuvanje...' : 'Dodaj odsustvo' }}</button>
+        </div>
+      </form>
+
+      <div class="table-wrap">
+        @if (timeOffLoading) {
+          <p>Učitavanje time-off...</p>
+        } @else {
+          <table>
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Trajanje</th>
+                <th>Razlog</th>
+                <th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (timeOffs.length) {
+                @for (row of timeOffs; track row.id) {
+                  <tr>
+                    <td>{{ formatDate(row.dateFrom) }} - {{ formatDate(row.dateTo) }}</td>
+                    <td>{{ formatTimeOffWindow(row) }}</td>
+                    <td>{{ row.reason || '-' }}</td>
+                    <td><button type="button" class="btn-danger" (click)="removeTimeOff(row.id)">Obriši</button></td>
+                  </tr>
+                }
+              } @else {
+                <tr>
+                  <td colspan="4" class="empty-state">Nema unesenih time-off perioda.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    </section>
+  }
+</section>

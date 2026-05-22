@@ -1,0 +1,111 @@
+<section class="page">
+  <div class="verify-card">
+    @switch (state) {
+      @case ('pending') {
+        <div class="state-icon state-icon-pending" aria-hidden="true">
+          <span class="spinner"></span>
+        </div>
+        <h1>Verifikacija u toku...</h1>
+        <p class="muted">Provjeravamo vaš verifikacioni link, samo trenutak.</p>
+      }
+
+      @case ('success') {
+        <div class="state-icon state-icon-success" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h1>Email verifikovan!</h1>
+        <p class="muted">Prijava u toku, sad ćete biti preusmjereni u admin panel.</p>
+      }
+
+      @case ('expired') {
+        <div class="state-icon state-icon-warning" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <h1>Link je istekao</h1>
+        <p class="muted">
+          Verifikacioni link vrijedi 24 sata. Pošaljite novi link i pokušajte ponovo.
+        </p>
+
+        @if (!recoveryEmail) {
+          <label for="resend-email" class="resend-label">Email adresa</label>
+          <input
+            id="resend-email"
+            type="email"
+            [(ngModel)]="manualEmail"
+            name="email"
+            placeholder="vlasnik@vasdomenu.ba"
+            autocomplete="email"
+            class="resend-input"
+          />
+        } @else {
+          <p class="recovery-email">Novi link će biti poslan na <strong>{{ recoveryEmail }}</strong></p>
+        }
+
+        <button type="button" class="primary-btn" (click)="resend()" [disabled]="resending || (!recoveryEmail && !manualEmail)">
+          @if (resending) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>Slanje...</span>
+          } @else {
+            <span>Pošalji novi link</span>
+          }
+        </button>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      }
+
+      @case ('invalid') {
+        <div class="state-icon state-icon-danger" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1>Link nije valjan</h1>
+        <p class="muted">
+          Ovaj link je neispravan ili je već iskorišten. Možete tražiti novi link.
+        </p>
+
+        <label for="resend-email" class="resend-label">Email adresa</label>
+        <input
+          id="resend-email"
+          type="email"
+          [(ngModel)]="manualEmail"
+          name="email"
+          placeholder="vlasnik@vasdomenu.ba"
+          autocomplete="email"
+          class="resend-input"
+        />
+
+        <button type="button" class="primary-btn" (click)="resend()" [disabled]="resending || !manualEmail">
+          @if (resending) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>Slanje...</span>
+          } @else {
+            <span>Pošalji novi link</span>
+          }
+        </button>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      }
+
+      @case ('missing-token') {
+        <div class="state-icon state-icon-danger" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1>Nedostaje token</h1>
+        <p class="muted">
+          Ovaj URL ne sadrži verifikacioni token. Otvorite link direktno iz email-a koji ste dobili.
+        </p>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      }
+    }
+  </div>
+</section>

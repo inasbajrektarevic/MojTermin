@@ -1,0 +1,8 @@
+<section class="toast-wrap">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <article class="toast" [class.success]="toast.type === 'success'" [class.error]="toast.type === 'error'">
+      <span>{{ toast.message }}</span>
+      <button (click)="toastService.remove(toast.id)" aria-label="zatvori">x</button>
+    </article>
+  }
+</section>

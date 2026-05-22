@@ -1,0 +1,51 @@
+<section class="page">
+  <div class="hero">
+    <div class="hero-main">
+      <p class="eyebrow">ADMIN PREGLED</p>
+      <h1>Dashboard</h1>
+      <p class="subtitle">Brzi pregled stanja termina i klijenata za tvoj biznis.</p>
+    </div>
+    <div class="export-box">
+      <h3>Izvoz prihoda (CSV)</h3>
+      <div class="export-row">
+        <label for="rev-from">Od</label>
+        <input id="rev-from" type="date" [(ngModel)]="exportFrom" />
+      </div>
+      <div class="export-row">
+        <label for="rev-to">Do</label>
+        <input id="rev-to" type="date" [(ngModel)]="exportTo" />
+      </div>
+      <button type="button" class="export-btn" [disabled]="exporting" (click)="exportRevenueCsv()">
+        {{ exporting ? 'Izvoz...' : 'Preuzmi CSV' }}
+      </button>
+    </div>
+  </div>
+
+  @if (summary) {
+    <div class="grid">
+      <article class="card card-primary">
+        <div class="card-top">
+          <h3>Današnji termini</h3>
+          <span class="icon">📅</span>
+        </div>
+        <p>{{ summary.todaysAppointments }}</p>
+      </article>
+      <article class="card card-accent">
+        <div class="card-top">
+          <h3>Ove sedmice</h3>
+          <span class="icon">📈</span>
+        </div>
+        <p>{{ summary.thisWeekAppointments }}</p>
+      </article>
+      <article class="card card-success">
+        <div class="card-top">
+          <h3>Novi klijenti</h3>
+          <span class="icon">👥</span>
+        </div>
+        <p>{{ summary.newClients }}</p>
+      </article>
+    </div>
+  } @else {
+    <p>Učitavanje...</p>
+  }
+</section>

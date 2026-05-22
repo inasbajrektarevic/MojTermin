@@ -1,0 +1,52 @@
+<section class="page">
+  <h1>Admin prijava</h1>
+  <p class="muted">Biznis: <strong>{{ slug }}</strong></p>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="card">
+    <label>
+      Username ili email
+      <input type="text" formControlName="usernameOrEmail" />
+    </label>
+    @if (fieldError('usernameOrEmail')) {
+      <p class="error">{{ fieldError('usernameOrEmail') }}</p>
+    }
+
+    <label>
+      Lozinka
+      <input type="password" formControlName="password" />
+    </label>
+    @if (fieldError('password')) {
+      <p class="error">{{ fieldError('password') }}</p>
+    }
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    @if (unverifiedEmail) {
+      <div class="unverified-banner">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <div class="unverified-text">
+          <strong>Email nije verifikovan</strong>
+          <span>Provjerite inbox na <em>{{ unverifiedEmail }}</em> i kliknite verifikacioni link.</span>
+        </div>
+        <button type="button" class="resend-btn" (click)="resendVerification()" [disabled]="resending">
+          @if (resending) {
+            <span class="btn-spinner-sm" aria-hidden="true"></span>
+            <span>Slanje...</span>
+          } @else {
+            <span>Pošalji novi link</span>
+          }
+        </button>
+      </div>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Prijava...' : 'Prijavi se' }}
+    </button>
+
+    <a routerLink="/forgot-password" class="forgot-link">Zaboravljena lozinka?</a>
+  </form>
+</section>

@@ -1,0 +1,38 @@
+@use '../admin-shared';
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.status-badge.sent {
+  background: #ecfdf3;
+  color: #027a48;
+  border-color: #abefc6;
+}
+
+.status-badge.failed {
+  background: #fef3f2;
+  color: #b42318;
+  border-color: #fecdca;
+}
+
+.status-badge.skipped {
+  background: #f2f4f7;
+  color: #344054;
+  border-color: #d0d5dd;
+}

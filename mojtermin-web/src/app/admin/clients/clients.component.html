@@ -1,0 +1,89 @@
+<section class="page">
+  <h1>Klijenti</h1>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <label for="client-search" class="sr-only">Pretraga klijenata</label>
+      <input id="client-search" name="query" class="search" [(ngModel)]="query" placeholder="Pretraga ime/telefon/email" />
+    </div>
+    <button type="button" class="btn-secondary export-btn" [disabled]="exporting" (click)="exportCsv()">
+      {{ exporting ? 'Izvoz...' : 'Izvezi CSV' }}
+    </button>
+  </div>
+
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <div class="field">
+      <label for="client-full-name" class="sr-only">Ime i prezime</label>
+      <input id="client-full-name" placeholder="Ime i prezime" formControlName="fullName" maxlength="150" autocomplete="name" />
+      <small class="error">{{ fieldError('fullName') }}</small>
+    </div>
+
+    <div class="field">
+      <label for="client-phone" class="sr-only">Telefon</label>
+      <input id="client-phone" placeholder="Telefon" formControlName="phone" maxlength="30" autocomplete="tel" />
+      <small class="error">{{ fieldError('phone') }}</small>
+    </div>
+
+    <div class="field">
+      <label for="client-email" class="sr-only">Email (opcionalno)</label>
+      <input id="client-email" placeholder="Email (opcionalno)" formControlName="email" type="email" autocomplete="email" />
+      <small class="error">&nbsp;</small>
+    </div>
+
+    <div class="field">
+      <label for="client-note" class="sr-only">Napomena (opcionalno)</label>
+      <input id="client-note" placeholder="Napomena (opcionalno)" formControlName="note" />
+      <small class="error">&nbsp;</small>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="saving">
+        {{ saving ? 'Čuvanje...' : (editingId ? 'Sačuvaj izmjene' : 'Dodaj klijenta') }}
+      </button>
+      @if (editingId) {
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">Otkaži uređivanje</button>
+      }
+    </div>
+  </form>
+
+  <div class="table-wrap">
+    @if (loading) {
+      <p>Učitavanje klijenata...</p>
+    } @else if (loadError) {
+      <p class="error">{{ loadError }}</p>
+    } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Ime i prezime</th>
+          <th>Telefon</th>
+          <th>Email</th>
+          <th>Napomena</th>
+          <th>Kreiran</th>
+          <th>Akcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (filteredClients.length) {
+          @for (row of filteredClients; track row.id) {
+            <tr>
+              <td>{{ row.fullName }}</td>
+              <td>{{ row.phone }}</td>
+              <td>{{ row.email || '-' }}</td>
+              <td>{{ row.note || '-' }}</td>
+              <td>{{ row.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+              <td>
+                <button type="button" class="btn-secondary" (click)="edit(row)">Uredi</button>
+                <button type="button" class="btn-danger" (click)="remove(row.id)">Obriši</button>
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="6" class="empty-state">Nema klijenata za prikaz.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</section>

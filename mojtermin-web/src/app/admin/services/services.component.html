@@ -1,0 +1,168 @@
+<section class="page services-admin">
+  <header class="services-head">
+    <h1>Usluge</h1>
+    <p class="services-lead">Definišite usluge koje klijenti vide na javnoj stranici i biraju pri rezervaciji. Trajanje i cijena pomažu kalendaru i prikazu cijena.</p>
+  </header>
+
+  <div class="services-form-card">
+    @if (editingId) {
+      <p class="services-edit-hint" role="status">
+        <span class="services-edit-badge">Uređivanje</span>
+        <span class="services-edit-text">Izmijenite polja ispod, zatim sačuvajte ili otkažite.</span>
+      </p>
+    }
+    <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
+    <div class="field-stack">
+      <div class="field-error-slot" aria-live="polite">
+        @if (fieldError('name')) {
+          <small class="error">{{ fieldError('name') }}</small>
+        }
+      </div>
+      <label for="svc-name" class="field-label">Naziv usluge</label>
+      <input id="svc-name" formControlName="name" maxlength="150" autocomplete="off" />
+    </div>
+
+    <div class="field-stack">
+      <div class="field-error-slot" aria-hidden="true"></div>
+      <label for="svc-description" class="field-label">Opis</label>
+      <input id="svc-description" placeholder="Opcionalno" formControlName="description" autocomplete="off" />
+    </div>
+
+    <div class="field-stack field-stack-image">
+      <div class="field-error-slot" aria-hidden="true"></div>
+      <span class="field-label">Slika usluge</span>
+      <div class="service-image-controls">
+        @if (form.get('imageUrl')?.value) {
+          <img class="service-image-thumb" [src]="form.get('imageUrl')?.value" alt="Pregled slike usluge" />
+        }
+        <label
+          class="service-image-pick"
+          [class.is-busy]="uploadingServiceImage"
+          [class.is-disabled]="uploadingServiceImage || saving"
+        >
+          @if (uploadingServiceImage) {
+            <span>Upload…</span>
+          } @else {
+            <span>{{ form.get('imageUrl')?.value ? 'Promijeni sliku' : 'Odaberi sliku' }}</span>
+          }
+          <input
+            #serviceImageFile
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp,image/*"
+            [disabled]="uploadingServiceImage || saving"
+            (change)="onServiceImageSelected($event)"
+            hidden
+          />
+        </label>
+        @if (form.get('imageUrl')?.value) {
+          <button type="button" class="btn-secondary" (click)="clearServiceImage()" [disabled]="uploadingServiceImage || saving">Ukloni</button>
+        }
+      </div>
+      <small class="hint service-image-hint">JPG, PNG ili WEBP · do 5 MB · opcionalno. URL se popuni automatski nakon uploada.</small>
+    </div>
+
+    <div class="field-stack">
+      <div class="field-error-slot" aria-live="polite">
+        @if (fieldError('durationMinutes')) {
+          <small class="error">{{ fieldError('durationMinutes') }}</small>
+        }
+      </div>
+      <label for="svc-duration" class="field-label">Trajanje</label>
+      <div class="input-with-unit">
+        <input id="svc-duration" type="number" formControlName="durationMinutes" min="1" />
+        <span class="unit">min</span>
+      </div>
+    </div>
+
+    <div class="field-stack">
+      <div class="field-error-slot" aria-live="polite">
+        @if (fieldError('price')) {
+          <small class="error">{{ fieldError('price') }}</small>
+        }
+      </div>
+      <label for="svc-price" class="field-label">Cijena</label>
+      <div class="input-with-unit">
+        <input id="svc-price" type="number" formControlName="price" min="0" step="0.01" />
+        <span class="unit">KM</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      @if (editingId) {
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">Otkaži uređivanje</button>
+      }
+      <button type="submit" class="services-submit" [disabled]="saving">
+        {{ saving ? 'Čuvanje...' : (editingId ? 'Sačuvaj izmjene' : 'Dodaj uslugu') }}
+      </button>
+    </div>
+  </form>
+  </div>
+
+  <div class="services-list-card">
+    <div class="services-list-head">
+      <h2 class="services-list-title">Lista usluga</h2>
+      @if (!loading && !loadError) {
+        <span class="services-count">Ukupno {{ services.length }}</span>
+      }
+    </div>
+
+    <div class="table-wrap services-table-wrap">
+    @if (loading) {
+      <p class="services-loading">Učitavanje usluga…</p>
+    } @else if (loadError) {
+      <p class="services-load-error" role="alert">{{ loadError }}</p>
+    } @else {
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th scope="col">Usluga</th>
+          <th scope="col" class="cell-duration">Trajanje</th>
+          <th scope="col" class="cell-price">Cijena</th>
+          <th scope="col" class="cell-actions">Akcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (services.length) {
+          @for (row of services; track row.id) {
+            <tr [class.is-editing]="editingId === row.id">
+              <td class="cell-name">
+                <div class="service-name-cell">
+                  @if (row.imageUrl) {
+                    <img [src]="row.imageUrl" alt="" class="service-row-thumb" width="40" height="40" />
+                  } @else {
+                    <span class="service-row-thumb-fallback" aria-hidden="true"></span>
+                  }
+                  <div class="service-name-text">
+                    <span class="service-name">{{ row.name }}</span>
+                    @if (row.description) {
+                      <span class="service-desc-preview">{{ row.description }}</span>
+                    }
+                  </div>
+                </div>
+              </td>
+              <td class="cell-duration"><span class="tabular">{{ row.durationMinutes }}</span> min</td>
+              <td class="cell-price tabular">{{ row.price | currency: 'BAM' : 'symbol-narrow' }}</td>
+              <td class="cell-actions">
+                <div class="services-row-actions">
+                  <button type="button" class="btn-secondary btn-table" (click)="edit(row)">Uredi</button>
+                  <button type="button" class="btn-danger btn-table" (click)="remove(row.id)">Obriši</button>
+                </div>
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="4">
+              <div class="services-empty">
+                <p class="services-empty-title">Još nema usluga</p>
+                <p class="services-empty-text">Dodajte prvu uslugu gore — pojavit će se ovdje u listi.</p>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    }
+    </div>
+  </div>
+</section>

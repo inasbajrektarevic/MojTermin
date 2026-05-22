@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#be185d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fbcfe8"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="700" cy="100" r="200" fill="#f9a8d4" opacity="0.12"/>
+  <circle cx="120" cy="430" r="220" fill="#a855f7" opacity="0.10"/>
+  <g transform="translate(345, 110)" fill="none" stroke="url(#accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M55 8 C20 8 4 40 4 70 C4 100 26 122 55 122 C84 122 106 100 106 70"/>
+    <path d="M106 70 L106 100 L116 110 L96 110"/>
+    <circle cx="35" cy="60" r="4" fill="url(#accent)"/>
+    <circle cx="75" cy="60" r="4" fill="url(#accent)"/>
+    <path d="M40 88 Q55 100 70 88"/>
+  </g>
+  <text x="400" y="320" fill="#ffffff" font-size="58" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="700" text-anchor="middle" letter-spacing="0.5">&#381;ensko &#353;i&#353;anje</text>
+  <rect x="340" y="345" width="120" height="4" rx="2" fill="url(#accent)"/>
+  <text x="400" y="395" fill="#fce7f3" font-size="22" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="500" text-anchor="middle" letter-spacing="3" opacity="0.75">MOJTERMIN AI</text>
+</svg>

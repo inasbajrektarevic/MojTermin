@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8">
+  <title>MojTermin — Online rezervacije termina</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MojTermin — platforma za online rezervaciju termina za male biznise. Saloni, ordinacije, servisi i drugo.">
+  <!--
+    Content Security Policy. Kept here so it applies during local dev (`ng serve`) too;
+    the nginx config in production tightens this with response headers that also cover
+    directives meta-tag CSP cannot deliver (e.g. frame-ancestors, report-to).
+    - 'unsafe-inline' on style-src is required by Angular component style hashing.
+    - flagcdn.com is needed for the international phone country flags.
+    - data: / blob: in img-src cover base64 thumbnails and File previews.
+    - connect-src and img-src are intentionally permissive (https:) here so the SPA
+      can talk to whichever API host environment.ts points at without rebuilding the
+      static bundle for every backend URL change. The nginx header in production
+      narrows this down per-deployment.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob: https: http://localhost:5080 https://localhost:7167;
+    font-src 'self' data:;
+    connect-src 'self' https: http://localhost:5080 https://localhost:7167;
+    base-uri 'self';
+    form-action 'self';
+    object-src 'none';
+  ">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

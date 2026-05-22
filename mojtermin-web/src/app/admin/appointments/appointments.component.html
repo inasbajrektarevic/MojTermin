@@ -1,0 +1,62 @@
+<section class="page">
+  <h1>Termini</h1>
+  <div class="filters">
+    <label for="appt-search" class="sr-only">Pretraga termina</label>
+    <input id="appt-search" name="query" [(ngModel)]="query" placeholder="Pretraga klijent/usluga/status" />
+    <label for="appt-status" class="sr-only">Status termina</label>
+    <select id="appt-status" name="status" [(ngModel)]="statusFilter">
+      <option value="">Svi statusi</option>
+      <option value="Confirmed">Potvrdjen</option>
+      <option value="Cancelled">Otkazan</option>
+      <option value="Completed">Zavrsen</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    @if (loading) {
+      <p>Učitavanje termina...</p>
+    } @else if (loadError) {
+      <p class="error">{{ loadError }}</p>
+    } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Vrijeme</th>
+          <th>Klijent</th>
+          <th>Zaposlenik</th>
+          <th>Usluga</th>
+          <th>Status</th>
+          <th>Akcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (filteredAppointments.length) {
+          @for (row of filteredAppointments; track row.id) {
+            <tr>
+              <td>{{ row.appointmentDate | date: 'dd.MM.yyyy' }}</td>
+              <td>{{ row.startTime }} - {{ row.endTime }}</td>
+              <td>{{ row.clientName }}</td>
+              <td>{{ row.staffMemberName || '-' }}</td>
+              <td>{{ row.serviceName }}</td>
+              <td>
+                <span class="status-badge" [class]="statusClass(row.status)">
+                  {{ statusLabel(row.status) }}
+                </span>
+              </td>
+              <td class="actions">
+                <button type="button" class="btn-secondary" (click)="setStatus(row.id, 'cancel')" [disabled]="statusLoadingId === row.id || !canApplyAction(row.status, 'cancel')">Otkaži</button>
+                <button type="button" class="btn-danger" (click)="remove(row.id)" [disabled]="deletingId === row.id">Obriši</button>
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="7" class="empty-state">Nema termina za prikaz prema trenutnim filterima.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</section>

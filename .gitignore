@@ -1,0 +1,49 @@
+# Secrets / local env
+.env
+.env.*
+!.env.example
+
+# .NET build artifacts
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userprefs
+.vs/
+.vscode/
+.idea/
+
+# Local out folders used by the existing build/test scripts.
+_build_out/
+_test_out/
+_ef_out/
+artifacts/
+
+# Node / Angular
+node_modules/
+dist/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+.angular/
+
+# OS junk
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Coverage / test results
+coverage/
+TestResults/
+*.coverage
+*.trx
+
+# Logs
+logs/
+*.log
+
+# User-secrets (dotnet user-secrets) live outside the repo by design but list for clarity.
+secrets.json

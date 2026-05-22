@@ -1,0 +1,85 @@
+# Local docker stack for MojTermin.
+# Usage:
+#   docker compose up --build
+#   docker compose down -v   # nuke volumes (DB + uploads)
+#
+# Required: a .env file in this folder with at least:
+#   SA_PASSWORD=YourStrong!Passw0rd
+#   JWT_SECRET=<64-char base64 from generate-jwt-secret instructions in README>
+# Optional:
+#   SMTP_HOST, SMTP_USERNAME, SMTP_PASSWORD, SENDER_EMAIL
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mojtermin-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${SA_PASSWORD:-YourStrong!Passw0rd}"
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - db-data:/var/opt/mssql
+    healthcheck:
+      # SQL Server image ships with sqlcmd in /opt/mssql-tools18/bin/.
+      test:
+        - CMD-SHELL
+        - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -Q "SELECT 1" -C -No || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: mojtermin-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=MojTerminAiDb;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True;MultipleActiveResultSets=True"
+      Jwt__Issuer: MojTermin.Api
+      Jwt__Audience: MojTermin.Client
+      Jwt__SecretKey: "${JWT_SECRET:?JWT_SECRET must be set in .env (see README, section 'Generisanje sigurnog Jwt__SecretKey')}"
+      Jwt__ExpirationMinutes: "480"
+      Auth__AllowPublicRegistration: "false"
+      Auth__RefreshTokenExpirationDays: "30"
+      Cors__AllowedOrigins__0: "${CORS_ALLOWED_ORIGIN:-http://localhost:8080}"
+      ClientApp__BaseUrl: "${CLIENT_APP_BASE_URL:-http://localhost:8080}"
+      ClientApp__EmailVerificationTokenLifetimeHours: "24"
+      Notifications__Enabled: "${NOTIFICATIONS_ENABLED:-false}"
+      Notifications__SenderName: "MojTermin"
+      Notifications__SenderEmail: "${SENDER_EMAIL:-noreply@mojtermin.com}"
+      Notifications__SmtpHost: "${SMTP_HOST:-}"
+      Notifications__SmtpPort: "${SMTP_PORT:-587}"
+      Notifications__UseSsl: "true"
+      Notifications__SmtpUsername: "${SMTP_USERNAME:-}"
+      Notifications__SmtpPassword: "${SMTP_PASSWORD:-}"
+      Sentry__Dsn: "${SENTRY_DSN:-}"
+      Sentry__Environment: "${SENTRY_ENVIRONMENT:-production}"
+      Sentry__TracesSampleRate: "${SENTRY_TRACES_SAMPLE_RATE:-0.1}"
+    ports:
+      - "5080:8080"
+    volumes:
+      - api-uploads:/app/wwwroot/uploads
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: mojtermin-web
+    depends_on:
+      - api
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  api-uploads:

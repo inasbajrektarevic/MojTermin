@@ -1,0 +1,385 @@
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero-wrap">
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
+
+  <div class="hero">
+    <span class="hero-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2L13.4 8.6L20 10L13.4 11.4L12 18L10.6 11.4L4 10L10.6 8.6L12 2Z"/>
+      </svg>
+      MojTermin · Platforma za rezervacije
+    </span>
+
+    <h1>
+      Tvoji klijenti rezervišu sami,
+      <span class="gradient-word">24/7</span>
+    </h1>
+
+    <p class="subtitle">
+      Bez propuštenih poziva, bez haosa u WhatsApp porukama, bez papirnatog kalendara.
+      Jedna platforma za online rezervacije — za salone, ordinacije, autoservise, fitness centre i druge male biznise.
+    </p>
+
+    <div class="cta-row">
+      @if (allowPublicReg === null) {
+        <button type="button" class="cta-btn cta-primary" disabled aria-busy="true">
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span>Učitavanje...</span>
+        </button>
+      } @else if (allowPublicReg) {
+      <a routerLink="/register-business" class="cta-btn cta-primary">
+        <span>Registruj svoj biznis</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      } @else {
+      <a [href]="salesTelHref" class="cta-btn cta-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <span>Pozovi za ponudu / demo <span class="cta-tel-inline-num">{{ salesPhoneDisplay }}</span></span>
+      </a>
+      }
+      <a *ngIf="showDemoLink" routerLink="/b/demo-salon" class="cta-btn cta-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span>Pogledaj demo biznis</span>
+      </a>
+    </div>
+
+    <ul class="trust-strip" aria-label="Pogodnosti">
+      @if (allowPublicReg === null) {
+      <li>Učitavanje…</li>
+      } @else if (allowPublicReg) {
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Besplatno za sada
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Bez kreditne kartice
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Setup za 5 minuta
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Email obavijesti uključene
+      </li>
+      } @else {
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Mjesečna pretplata (ponuda na upit)
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Virman / račun
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Nalog otvaraš uz dogovor
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Email obavijesti uključene
+      </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     OWNER ACCESS (slug finder) — odmah ispod hero-a
+     ============================================================ -->
+<section class="section access-section">
+  <div class="access-card">
+    <div class="access-info">
+      <span class="section-eyebrow">Već si vlasnik?</span>
+      <h2>Pristupi svojoj stranici</h2>
+      <p>Unesi slug svog biznisa pa idi direktno na svoju javnu stranicu ili admin panel.</p>
+    </div>
+
+    <form class="access-form" (ngSubmit)="goToBusiness()">
+      <label for="business-slug" class="sr-only">Slug biznisa</label>
+      <div class="slug-input-wrap">
+        <span class="slug-prefix" aria-hidden="true">/b/</span>
+        <input
+          id="business-slug"
+          type="text"
+          [(ngModel)]="slug"
+          name="slug"
+          placeholder="salon-alma"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <div class="access-actions">
+        <button type="submit" class="cta-btn cta-primary" [disabled]="loading">
+          @if (loading) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>Provjera...</span>
+          } @else {
+            <span>Otvori stranicu</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          }
+        </button>
+        <button type="button" class="cta-btn cta-ghost" (click)="goToAdminLogin()" [disabled]="loading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Admin login</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================
+     KAKO FUNKCIONIŠE
+     ============================================================ -->
+<section class="section how-section">
+  <header class="section-head">
+    <span class="section-eyebrow">Jednostavno</span>
+    <h2>Kako funkcioniše?</h2>
+    @if (allowPublicReg === false) {
+    <p>Tri koraka od dogovora do prve online rezervacije.</p>
+    } @else {
+    <p>Tri koraka od registracije do prve online rezervacije.</p>
+    }
+  </header>
+
+  <ol class="steps">
+    <li class="step-card">
+      <span class="step-num">1</span>
+      <span class="step-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+      </span>
+      @if (allowPublicReg === false) {
+      <h3>Kontaktiraj nas</h3>
+      <p>Pošalji upit za cijenu i demo. Nakon ugovora i uplate (virman / račun) aktiviramo tvoj nalog i javni link.</p>
+      } @else {
+      <h3>Registruj se</h3>
+      <p>Kreiraj profil za biznis za par minuta. Dobiješ admin panel i javni link odmah.</p>
+      }
+    </li>
+    <li class="step-card">
+      <span class="step-num">2</span>
+      <span class="step-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </span>
+      <h3>Podesi usluge</h3>
+      <p>Dodaj usluge, cijene, trajanja i radno vrijeme. Sve se podesi iz admin panela za par klikova.</p>
+    </li>
+    <li class="step-card">
+      <span class="step-num">3</span>
+      <span class="step-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+          <polyline points="9 16 11 18 15 14"></polyline>
+        </svg>
+      </span>
+      <h3>Primaj rezervacije</h3>
+      <p>Podijeli svoj javni link. Klijenti vide slobodne termine i rezervišu — bez tvog uplitanja.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============================================================
+     FEATURES
+     ============================================================ -->
+<section class="section features-section">
+  <header class="section-head">
+    <span class="section-eyebrow">Šta dobijaš</span>
+    <h2>Sve što ti treba za online rezervacije</h2>
+    <p>Bez kompliciranih integracija, bez WhatsApp grupa, bez papirnatog rokovnika.</p>
+  </header>
+
+  <div class="feature-grid">
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </span>
+      <h3>Online rezervacije 24/7</h3>
+      <p>Klijenti rezervišu kad njima odgovara — i u 3 ujutro. Ti više ne moraš odgovarati na pozive dok radiš.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-green">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </span>
+      <h3>Email obavijesti automatski</h3>
+      <p>Klijent dobije potvrdu emailom, ti dobiješ obavijest. Otkazivanje, izmjena — sve uz mail.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-violet">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </span>
+      <h3>Javni profil sa custom linkom</h3>
+      <p>Dobiješ link tipa <code>mojtermin.ai/b/tvoj-salon</code> koji možeš dijeliti na Instagramu, vizit kartama i u bio-u.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-orange">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </span>
+      <h3>Admin panel za sve</h3>
+      <p>Vidi sve termine, klijente, usluge, radno vrijeme i statistike — na jednom mjestu, sa bilo kojeg uređaja.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-pink">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+      </span>
+      <h3>Bez propuštenih poziva</h3>
+      <p>Klijent ne mora čekati da javiš. Stalno dostupna lista slobodnih termina = manje propuštenih rezervacija.</p>
+    </article>
+
+    <article class="feature-card">
+      <span class="feature-icon feature-icon-teal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+      </span>
+      <h3>Radi savršeno na mobilnom</h3>
+      <p>Klijenti najčešće rezervišu sa telefona. Sve stranice su optimizovane za mobilne uređaje.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     ZA KOGA JE MOJTERMIN?
+     ============================================================ -->
+<section class="section usecase-section">
+  <header class="section-head">
+    <span class="section-eyebrow">Za svaki biznis</span>
+    <h2>Za koga je MojTermin?</h2>
+    <p>Za svaki biznis čiji klijenti zakazuju termine. Bez izuzetka.</p>
+  </header>
+
+  <div class="usecase-grid">
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">💇</span>
+      <h4>Frizerski saloni</h4>
+      <p>Šišanja, farbanja, tretmani</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">🦷</span>
+      <h4>Stomatološke ordinacije</h4>
+      <p>Pregledi, intervencije, čišćenja</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">💅</span>
+      <h4>Kozmetički i nail studio</h4>
+      <p>Maniri, tretmani lica, depilacija</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">🏋️</span>
+      <h4>Fitness i lični treneri</h4>
+      <p>Treninzi, grupne sesije, joga</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">🚗</span>
+      <h4>Autoservisi i auto praonice</h4>
+      <p>Servis, pranje, dijagnostika</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">💆</span>
+      <h4>Spa i masažni centri</h4>
+      <p>Masaže, tretmani, wellness</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">📚</span>
+      <h4>Instrukcije i edukacija</h4>
+      <p>Privatni časovi, kursevi</p>
+    </div>
+    <div class="usecase-card">
+      <span class="usecase-emoji" aria-hidden="true">📸</span>
+      <h4>Foto studio</h4>
+      <p>Portreti, vjenčanja, eventi</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>MojTermin</strong>
+      <span>Platforma za online rezervacije.</span>
+    </div>
+    <ul class="footer-links">
+      @if (allowPublicReg === true) {
+      <li><a routerLink="/register-business">Registracija</a></li>
+      } @else if (allowPublicReg === false) {
+      <li><a [href]="salesTelHref">Pozovi: {{ salesPhoneDisplay }}</a></li>
+      } @else {
+      <li><a routerLink="/register-business">Registracija</a></li>
+      }
+      <li *ngIf="showDemoLink"><a routerLink="/b/demo-salon">Demo</a></li>
+      <li><a href="mailto:podrska&#64;mojtermin.ai">Podrška</a></li>
+    </ul>
+    <p class="footer-meta">© 2026 MojTermin · Made in Bosnia &amp; Herzegovina</p>
+  </div>
+</footer>

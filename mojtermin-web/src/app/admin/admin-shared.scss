@@ -1,0 +1,39 @@
+.page {
+  padding: 1.1rem;
+  display: grid;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border-soft);
+  padding: 0.72rem;
+  text-align: left;
+}
+
+th {
+  background: var(--surface-soft);
+  font-weight: 600;
+  color: var(--text);
+}
+
+tbody tr:hover {
+  background: #fbfcff;
+}

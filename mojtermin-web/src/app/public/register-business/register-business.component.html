@@ -1,0 +1,371 @@
+<section class="page">
+  @if (registrationResult) {
+    <!-- Strict email verification: registration succeeded but no auto-login.
+         The owner must click the link mailed to ownerEmail before /api/auth/login
+         will issue tokens. This card replaces the form entirely. -->
+    <div class="verify-card">
+      <div class="verify-check" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+      <h1>Provjeri svoj email</h1>
+      @if (registrationResult.emailDispatched) {
+        <p class="verify-sub">
+          Verifikacioni link je poslan na
+          <strong>{{ registrationResult.ownerEmail }}</strong>.
+          Kliknite na link u email-u da završite registraciju i pristupite admin panelu.
+        </p>
+      } @else {
+        <p class="verify-sub verify-sub-warn">
+          Nalog je kreiran za <strong>{{ registrationResult.ownerEmail }}</strong>, ali
+          <strong>email nije poslan</strong> — na serveru nije podešen SMTP (obično u development okruženju).
+        </p>
+      }
+
+      @if (registrationResult.devVerificationUrl) {
+        <div class="dev-verify-box" aria-label="Development verifikacioni link">
+          <p class="dev-verify-title">Lokalni razvoj — direktan link</p>
+          <p class="dev-verify-hint">Kopiraj ili klikni da potvrdiš email bez SMTP-a:</p>
+          <a class="dev-verify-link" [href]="registrationResult.devVerificationUrl">{{ registrationResult.devVerificationUrl }}</a>
+        </div>
+      }
+
+      @if (registrationResult.emailDispatched) {
+      <a class="verify-inbox-btn" [href]="getInboxLink()" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+          <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+        </svg>
+        Otvori moj email
+      </a>
+      }
+
+      <div class="verify-hints">
+        @if (registrationResult.emailDispatched) {
+        <p class="hint">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          Ako ne vidite email u inbox-u, provjerite <strong>spam</strong> ili <strong>promotions</strong> folder.
+        </p>
+        }
+        <p class="hint">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Link vrijedi <strong>24 sata</strong>.
+        </p>
+      </div>
+
+      <div class="verify-actions">
+        <button type="button" class="resend-btn" (click)="resendVerification()" [disabled]="resending">
+          @if (resending) {
+            <span class="btn-spinner-sm" aria-hidden="true"></span>
+            <span>Slanje...</span>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span>Pošalji link ponovo</span>
+          }
+        </button>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    </div>
+  } @else if (allowPublicReg === null) {
+    <div class="verify-card">
+      <p class="verify-sub">Učitavanje…</p>
+    </div>
+  } @else if (allowPublicReg === false) {
+    <div class="verify-card">
+      <div class="verify-check" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+      <h1>Javna registracija je isključena</h1>
+      <p class="verify-sub">
+        MojTermin trenutno uključujemo partnerima uz <strong>mjesečnu pretplatu</strong> (virman / račun).
+        <strong>Pozovi nas</strong> — dogovorimo demo, cijenu i aktivaciju tvog naloga.
+      </p>
+      <a class="verify-inbox-btn" [href]="salesTelHref">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <span>Pozovi: {{ salesPhoneDisplay }}</span>
+      </a>
+      <div class="verify-actions">
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    </div>
+  } @else {
+  <header class="register-hero">
+    <span class="hero-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2L13.4 8.6L20 10L13.4 11.4L12 18L10.6 11.4L4 10L10.6 8.6L12 2Z"/>
+      </svg>
+      Novo na MojTermin
+    </span>
+    <h1>Registruj svoj biznis</h1>
+    <p class="hero-sub">Napravi profesionalan profil za svoj salon i počni primati rezervacije online. Bez kreditne kartice, bez ugovora.</p>
+
+    <ul class="hero-features">
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Admin panel odmah dostupan
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Online rezervacije 24/7
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Email potvrde klijentima
+      </li>
+    </ul>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="register-card">
+    <!-- Section 1: Business info -->
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-business" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+        <div>
+          <h2>Podaci o biznisu</h2>
+          <p>Ime salona, tip, kontakt i adresa</p>
+        </div>
+      </header>
+
+      <div class="field">
+        <label for="reg-name">Naziv biznisa <span class="req">*</span></label>
+        <input id="reg-name" type="text" placeholder="npr. Salon Alma" formControlName="businessName" autocomplete="organization" />
+      </div>
+
+      <div class="field">
+        <label for="reg-slug">Slug (URL) <span class="req">*</span></label>
+        <input id="reg-slug" type="text" placeholder="salon-alma" formControlName="slug" autocomplete="off" />
+        <small class="hint">Pojavljuje se u linku: <code>mojtermin.ai/b/<strong>salon-alma</strong></code></small>
+      </div>
+
+      <div class="field">
+        <label for="reg-type">Tip biznisa <span class="req">*</span></label>
+        <select id="reg-type" formControlName="businessType">
+          @for (option of businessTypeOptions; track $index) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="reg-phone">Telefon <span class="req">*</span></label>
+        <div class="phone-row">
+          <div class="country-picker" [class.open]="countryDropdownOpen">
+            <button
+              type="button"
+              class="country-picker-trigger"
+              (click)="toggleCountryDropdown($event)"
+              aria-label="Odaberi državu za broj telefona"
+              [attr.aria-expanded]="countryDropdownOpen"
+            >
+              @if (selectedPhoneCountry) {
+                <img class="country-flag-preview" [src]="selectedPhoneCountry.flagUrl" [alt]="selectedPhoneCountry.name" loading="lazy" />
+                <span>{{ selectedPhoneCountry.iso2.toUpperCase() }} ({{ selectedPhoneCountry.dialCode }})</span>
+              }
+              <span class="country-picker-caret" aria-hidden="true">▾</span>
+            </button>
+            @if (countryDropdownOpen) {
+              <div class="country-dropdown" role="listbox">
+                @for (country of phoneCountries; track country.iso2) {
+                  <button type="button" class="country-option" (click)="selectCountry(country.iso2)" role="option">
+                    <img class="country-option-flag" [src]="country.flagUrl" [alt]="country.name" loading="lazy" />
+                    <span>{{ country.iso2.toUpperCase() }} ({{ country.dialCode }})</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+          <input
+            id="reg-phone"
+            type="tel"
+            placeholder="61 234 567"
+            formControlName="phoneNumber"
+            maxlength="30"
+            autocomplete="tel"
+            inputmode="numeric"
+          />
+        </div>
+        @if (phoneFieldError()) {
+          <small class="error">{{ phoneFieldError() }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="reg-business-email">Business email <span class="req">*</span></label>
+        <input id="reg-business-email" type="email" placeholder="kontakt@vasdomenu.ba" formControlName="businessEmail" autocomplete="email" />
+        <small class="hint">Email na koji ćeš dobijati obavijesti o rezervacijama.</small>
+      </div>
+
+      <div class="field">
+        <label for="reg-address">Adresa</label>
+        <div class="address-row">
+          <input id="reg-address" type="text" placeholder="Ulica i broj, grad" formControlName="address" autocomplete="street-address" />
+          @if (googleMapsCheckUrl; as mapsUrl) {
+            <a class="maps-check-btn" [href]="mapsUrl" target="_blank" rel="noopener noreferrer" title="Provjeri adresu na Google Maps">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Provjeri na mapi</span>
+            </a>
+          } @else {
+            <button type="button" class="maps-check-btn is-disabled" disabled title="Prvo unesite adresu">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Provjeri na mapi</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="reg-description">Opis biznisa</label>
+        <textarea id="reg-description" placeholder="Kratki opis salonа (npr. Moderan salon za šišanje i farbanje sa 10+ godina iskustva.)" formControlName="description"></textarea>
+        <small class="hint">Opcionalno · Maksimalno 1000 karaktera</small>
+      </div>
+
+      <div class="field">
+        <label>Logo brenda</label>
+        <div class="logo-dropzone" [class.has-logo]="logoPreviewUrl">
+          @if (logoPreviewUrl) {
+            <img [src]="logoPreviewUrl" alt="Logo preview" class="logo-preview" />
+            <div class="logo-actions">
+              <span class="logo-uploaded-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Logo postavljen
+              </span>
+              <label class="logo-replace-btn">
+                Promijeni
+                <input type="file" accept=".jpg,.jpeg,.png,.webp,image/*" (change)="onLogoSelected($event)" hidden />
+              </label>
+            </div>
+          } @else {
+            <label class="logo-empty">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span class="logo-empty-title">Klikni da odabereš logo</span>
+              <span class="logo-empty-hint">JPG, PNG ili WEBP · do 5 MB</span>
+              <input type="file" accept=".jpg,.jpeg,.png,.webp,image/*" (change)="onLogoSelected($event)" hidden />
+            </label>
+          }
+        </div>
+        @if (uploadingLogo) {
+          <small class="hint upload-progress">
+            <span class="spinner-dot" aria-hidden="true"></span>
+            Upload slike u toku...
+          </small>
+        }
+      </div>
+    </div>
+
+    <!-- Section 2: Owner account -->
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-owner" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <div>
+          <h2>Vlasnikov nalog</h2>
+          <p>Sa ovim podacima ćeš se prijavljivati u admin panel</p>
+        </div>
+      </header>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="reg-owner-name">Ime i prezime <span class="req">*</span></label>
+          <input id="reg-owner-name" type="text" placeholder="Vaše ime i prezime" formControlName="ownerFullName" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="reg-owner-email">Email <span class="req">*</span></label>
+          <input id="reg-owner-email" type="email" placeholder="vlasnik@vasdomenu.ba" formControlName="ownerEmail" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="reg-owner-username">Korisničko ime <span class="req">*</span></label>
+          <input id="reg-owner-username" type="text" placeholder="npr. alma" formControlName="ownerUsername" autocomplete="username" />
+          <small class="hint">Koristit ćeš ga za login.</small>
+        </div>
+        <div class="field">
+          <label for="reg-owner-password">Lozinka <span class="req">*</span></label>
+          <input id="reg-owner-password" type="password" placeholder="Najmanje 6 karaktera" formControlName="ownerPassword" autocomplete="new-password" />
+          <small class="hint">Minimalno 6, preporučeno 10+ karaktera.</small>
+        </div>
+      </div>
+    </div>
+
+    @if (error) {
+      <div class="form-error">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ error }}</span>
+      </div>
+    }
+
+    <div class="form-cta">
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        @if (loading) {
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span>Kreiranje...</span>
+        } @else {
+          <span>Kreiraj biznis i prijavi me</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        }
+      </button>
+      <p class="form-cta-note">Klikom prihvataš da se kreira admin nalog na unesenu email adresu.</p>
+    </div>
+  </form>
+
+  <a class="back-link" routerLink="/">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Nazad na početnu
+  </a>
+  }
+</section>

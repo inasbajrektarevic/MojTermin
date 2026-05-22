@@ -1,0 +1,40 @@
+# Local build / IDE noise — never ship to the Docker build context.
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+**/TestResults/
+
+# Local out folders
+_build_out/
+_test_out/
+_ef_out/
+artifacts/
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+*.pfx
+*.key
+
+# Git metadata
+.git/
+.gitignore
+.gitattributes
+
+# Tests project — not needed in the runtime image.
+MojTermin.Api.Tests/
+
+# Misc
+**/*.user
+**/*.suo
+**/Thumbs.db
+**/.DS_Store
+README.md
+scripts/

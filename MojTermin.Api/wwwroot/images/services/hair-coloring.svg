@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9a3412"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fcd34d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="120" cy="120" r="200" fill="#fb923c" opacity="0.18"/>
+  <circle cx="680" cy="420" r="220" fill="#fde68a" opacity="0.12"/>
+  <g transform="translate(340, 100)">
+    <circle cx="35" cy="40" r="22" fill="#fde68a"/>
+    <circle cx="80" cy="40" r="22" fill="#f97316"/>
+    <circle cx="125" cy="40" r="22" fill="#fb7185"/>
+    <path d="M80 80 C60 100 60 125 80 130 C100 125 100 100 80 80 Z" fill="url(#accent)"/>
+  </g>
+  <text x="400" y="320" fill="#ffffff" font-size="58" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="700" text-anchor="middle" letter-spacing="0.5">Farbanje kose</text>
+  <rect x="340" y="345" width="120" height="4" rx="2" fill="url(#accent)"/>
+  <text x="400" y="395" fill="#fed7aa" font-size="22" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="500" text-anchor="middle" letter-spacing="3" opacity="0.85">MOJTERMIN AI</text>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="120" cy="120" r="200" fill="#60a5fa" opacity="0.12"/>
+  <circle cx="680" cy="420" r="220" fill="#38bdf8" opacity="0.08"/>
+  <g transform="translate(360, 100)" fill="none" stroke="url(#accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="14" width="100" height="100" rx="10"/>
+    <line x1="6" y1="44" x2="106" y2="44"/>
+    <line x1="34" y1="6" x2="34" y2="22"/>
+    <line x1="78" y1="6" x2="78" y2="22"/>
+    <line x1="34" y1="70" x2="46" y2="70"/>
+    <line x1="60" y1="70" x2="78" y2="70"/>
+    <line x1="34" y1="90" x2="46" y2="90"/>
+    <line x1="60" y1="90" x2="78" y2="90"/>
+  </g>
+  <text x="400" y="320" fill="#f8fafc" font-size="54" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="700" text-anchor="middle" letter-spacing="0.5">MojTermin</text>
+  <rect x="340" y="345" width="120" height="4" rx="2" fill="url(#accent)"/>
+  <text x="400" y="395" fill="#cbd5e1" font-size="22" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="500" text-anchor="middle" letter-spacing="3" opacity="0.8">USLUGA</text>
+</svg>

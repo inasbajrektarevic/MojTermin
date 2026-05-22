@@ -1,0 +1,59 @@
+<section class="page">
+  <h1>Notifikacije</h1>
+
+  <div class="filters">
+    <label for="notif-status" class="sr-only">Status notifikacije</label>
+    <select id="notif-status" name="status" [(ngModel)]="statusFilter" (ngModelChange)="load()">
+      <option value="">Svi statusi</option>
+      <option value="2">Poslano</option>
+      <option value="3">Neuspješno</option>
+      <option value="1">Preskočeno</option>
+    </select>
+
+    <label for="notif-from" class="sr-only">Od datuma</label>
+    <input id="notif-from" name="fromDate" type="date" [(ngModel)]="fromDate" (ngModelChange)="load()" />
+    <label for="notif-to" class="sr-only">Do datuma</label>
+    <input id="notif-to" name="toDate" type="date" [(ngModel)]="toDate" (ngModelChange)="load()" />
+    <label for="notif-limit" class="sr-only">Broj zapisa (limit)</label>
+    <input id="notif-limit" name="limit" type="number" min="1" max="200" placeholder="Broj zapisa (limit)" [(ngModel)]="limit" (ngModelChange)="load()" />
+  </div>
+
+  <div class="table-wrap">
+    @if (loading) {
+      <p>Učitavanje notifikacija...</p>
+    } @else if (loadError) {
+      <p class="error">{{ loadError }}</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Kreirano</th>
+            <th>Status</th>
+            <th>Kanal</th>
+            <th>Primaoc</th>
+            <th>Naslov</th>
+            <th>Greška</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (notifications.length) {
+            @for (row of notifications; track row.id) {
+              <tr>
+                <td>{{ formatCreatedAt(row.createdAtUtc) }}</td>
+                <td><span class="status-badge" [class]="statusClass(row.status)">{{ statusLabel(row.status) }}</span></td>
+                <td>{{ channelLabel(row.channel) }}</td>
+                <td>{{ row.recipient }}</td>
+                <td>{{ row.subject }}</td>
+                <td>{{ row.errorMessage || '-' }}</td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td colspan="6" class="empty-state">Nema notifikacija za prikaz.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</section>

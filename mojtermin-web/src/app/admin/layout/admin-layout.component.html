@@ -1,0 +1,22 @@
+<nav class="top-nav">
+  <a routerLink="dashboard">Dashboard</a>
+  <a routerLink="appointments">Termini</a>
+  <a routerLink="services">Usluge</a>
+  <a routerLink="staff">Zaposlenici</a>
+  <a routerLink="clients">Klijenti</a>
+  <a routerLink="working-hours">Radni sati</a>
+  <a routerLink="notifications">
+    Notifikacije
+    @if (pendingAppointments > 0) {
+      <span class="badge">{{ pendingAppointments }}</span>
+    }
+  </a>
+  <a routerLink="audit">Audit</a>
+  <a routerLink="business-profile">Profil</a>
+  <a [routerLink]="['/b', slug]">Public</a>
+  <button class="btn-secondary" (click)="logout()">Logout</button>
+</nav>
+
+<main class="content">
+  <router-outlet />
+</main>

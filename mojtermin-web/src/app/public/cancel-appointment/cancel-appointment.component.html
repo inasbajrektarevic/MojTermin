@@ -1,0 +1,155 @@
+<section class="page">
+  @switch (state) {
+    @case ('loading') {
+      <div class="card">
+        <div class="state-icon state-icon-pending" aria-hidden="true">
+          <div class="spinner"></div>
+        </div>
+        <h1>Učitavanje termina...</h1>
+        <p class="muted">Provjeravamo detalje tvog termina.</p>
+      </div>
+    }
+
+    @case ('confirm') {
+      <div class="card">
+        <div class="state-icon state-icon-warning" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <h1>Otkazati termin?</h1>
+        <p class="muted">
+          @if (summary?.clientFirstName) {
+            Pozdrav <strong>{{ summary?.clientFirstName }}</strong>, želiš li otkazati ovaj termin?
+          } @else {
+            Želiš li otkazati ovaj termin?
+          }
+        </p>
+
+        <div class="details">
+          <div class="detail-row">
+            <span class="detail-label">Biznis</span>
+            <span class="detail-value">{{ summary?.businessName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Usluga</span>
+            <span class="detail-value">{{ summary?.serviceName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Datum</span>
+            <span class="detail-value">{{ formatDate(summary?.appointmentDate ?? '') }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Vrijeme</span>
+            <span class="detail-value">{{ formatTime(summary?.startTime ?? '') }} – {{ formatTime(summary?.endTime ?? '') }}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary-btn danger-btn" (click)="confirmCancel()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Da, otkaži termin
+          </button>
+          <a routerLink="/" class="back-link">Vrati me, zadrži termin</a>
+        </div>
+      </div>
+    }
+
+    @case ('cancelling') {
+      <div class="card">
+        <div class="state-icon state-icon-pending" aria-hidden="true">
+          <div class="spinner"></div>
+        </div>
+        <h1>Otkazujemo termin...</h1>
+        <p class="muted">Samo trenutak.</p>
+      </div>
+    }
+
+    @case ('cancelled') {
+      <div class="card">
+        <div class="state-icon state-icon-success" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h1>Termin otkazan</h1>
+        <p class="muted">
+          Tvoj termin u <strong>{{ summary?.businessName }}</strong> ({{ formatDate(summary?.appointmentDate ?? '') }} u {{ formatTime(summary?.startTime ?? '') }}) je uspješno otkazan.
+        </p>
+        <p class="muted small-note">Salon je obaviješten o otkazivanju.</p>
+
+        <a routerLink="/" class="primary-btn">Nazad na početnu</a>
+      </div>
+    }
+
+    @case ('already-cancelled') {
+      <div class="card">
+        <div class="state-icon state-icon-pending" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1>Termin je već otkazan</h1>
+        <p class="muted">
+          Tvoj termin u <strong>{{ summary?.businessName }}</strong> je već ranije otkazan. Ako želiš zakazati novi, otvori javnu stranicu salona.
+        </p>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    }
+
+    @case ('too-late') {
+      <div class="card">
+        <div class="state-icon state-icon-warning" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <h1>Prekasno za otkazivanje</h1>
+        <p class="muted">
+          Termin je već započeo ili je u toku. Online otkazivanje više nije moguće — molimo kontaktiraj salon direktno.
+        </p>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    }
+
+    @case ('invalid') {
+      <div class="card">
+        <div class="state-icon state-icon-danger" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <h1>Link nije validan</h1>
+        <p class="muted">
+          Ovaj link za otkazivanje nije validan ili je već iskorišten. Ako trebaš otkazati termin, kontaktiraj salon direktno.
+        </p>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    }
+
+    @case ('missing-token') {
+      <div class="card">
+        <div class="state-icon state-icon-danger" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1>Nedostaje token</h1>
+        <p class="muted">Otvori link za otkazivanje direktno iz potvrdnog mejla.</p>
+        <a routerLink="/" class="back-link">Nazad na početnu</a>
+      </div>
+    }
+  }
+</section>

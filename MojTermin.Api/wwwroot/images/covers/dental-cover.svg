@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+  <rect width="1200" height="420" fill="url(#g)"/>
+  <rect x="70" y="80" width="220" height="220" rx="50" fill="#ffffff" opacity="0.14"/>
+  <text x="350" y="230" fill="#ffffff" font-size="68" font-family="Segoe UI, Arial" font-weight="700">Dental Care</text>
+</svg>

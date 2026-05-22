@@ -1,0 +1,26 @@
+<section class="page">
+  <h1>Radni sati</h1>
+  @if (loading) {
+    <p>Učitavanje radnog vremena...</p>
+  } @else if (loadError) {
+    <p class="error">{{ loadError }}</p>
+  } @else {
+  <div class="rows">
+    @for (row of formRows.controls; track $index) {
+      <div class="row" [formGroup]="$any(row)">
+        <strong>{{ days[$index] }}</strong>
+        <label class="sr-only" [attr.for]="'open-' + $index">Otvaranje za {{ days[$index] }}</label>
+        <input [id]="'open-' + $index" type="text" formControlName="openTime" placeholder="07:00" inputmode="numeric" aria-label="Otvaranje" />
+        <label class="sr-only" [attr.for]="'close-' + $index">Zatvaranje za {{ days[$index] }}</label>
+        <input [id]="'close-' + $index" type="text" formControlName="closeTime" placeholder="19:00" inputmode="numeric" aria-label="Zatvaranje" />
+        <label>
+          <input type="checkbox" formControlName="isClosed" (change)="onClosedToggle($index)" />
+          Zatvoreno
+        </label>
+      </div>
+    }
+  </div>
+
+  <button (click)="save()" [disabled]="saving">{{ saving ? 'Čuvanje...' : 'Sačuvaj promjenu stanja' }}</button>
+  }
+</section>

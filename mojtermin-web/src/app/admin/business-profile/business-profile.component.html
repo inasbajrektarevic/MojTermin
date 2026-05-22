@@ -1,0 +1,349 @@
+<section class="page">
+  <header class="profile-hero">
+    <div class="profile-hero-text">
+      <span class="eyebrow">Admin · Profil</span>
+      <h1>Poslovni profil</h1>
+      <p class="profile-hero-sub">Upravljaj podacima koji se prikazuju klijentima na tvojoj javnoj stranici za rezervacije.</p>
+    </div>
+    @if (publicPageUrl) {
+      <a [href]="publicPageUrl" target="_blank" rel="noopener noreferrer" class="public-page-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        <span>Otvori javnu stranicu</span>
+      </a>
+    }
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="profile-card">
+    <!-- Section 1: Osnovni podaci -->
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-business" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+        <div>
+          <h2>Osnovni podaci</h2>
+          <p>Naziv biznisa, slug u URL-u i tip djelatnosti</p>
+        </div>
+      </header>
+
+      <div class="field-row">
+        <div class="field">
+          <div class="field-error-slot" aria-live="polite">
+            @if (fieldError('name')) {
+              <small class="error">{{ fieldError('name') }}</small>
+            }
+          </div>
+          <label for="bp-name">Naziv biznisa <span class="req">*</span></label>
+          <input id="bp-name" type="text" formControlName="name" placeholder="npr. Salon Alma" maxlength="150" autocomplete="organization" />
+          <div class="field-hint-slot" aria-hidden="true"></div>
+        </div>
+        <div class="field">
+          <div class="field-error-slot" aria-live="polite">
+            @if (fieldError('slug')) {
+              <small class="error">{{ fieldError('slug') }}</small>
+            }
+          </div>
+          <label for="bp-slug">Slug (URL) <span class="req">*</span></label>
+          <input id="bp-slug" type="text" formControlName="slug" placeholder="salon-alma" maxlength="160" autocomplete="off" />
+          <div class="field-hint-slot">
+            <small class="hint">Pojavljuje se u linku: <code>/b/<strong>{{ form.get('slug')?.value || 'slug' }}</strong></code></small>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bp-type">Tip biznisa <span class="req">*</span></label>
+        <select id="bp-type" formControlName="businessType">
+          <option [value]="1">Kozmetički salon</option>
+          <option [value]="2">Stomatološka ordinacija</option>
+          <option [value]="3">Autoservis</option>
+          <option [value]="4">Apartman</option>
+          <option [value]="5">Fitness</option>
+          <option [value]="6">Ostalo</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section 2: Kontakt i lokacija -->
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-contact" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </span>
+        <div>
+          <h2>Kontakt i lokacija</h2>
+          <p>Telefon, email i adresa koje klijenti vide</p>
+        </div>
+      </header>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bp-phone">Telefon <span class="req">*</span></label>
+          <input id="bp-phone" type="tel" formControlName="phone" placeholder="+387 61 234 567" maxlength="30" autocomplete="tel" />
+          @if (fieldError('phone')) {
+            <small class="error">{{ fieldError('phone') }}</small>
+          }
+        </div>
+        <div class="field">
+          <label for="bp-email">Email biznisa <span class="req">*</span></label>
+          <input id="bp-email" type="email" formControlName="email" placeholder="kontakt@vasdomenu.ba" autocomplete="email" />
+          <small class="hint">Na ovaj email stižu obavijesti o novim rezervacijama.</small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bp-address">Adresa <span class="req">*</span></label>
+        <div class="address-row">
+          <input id="bp-address" type="text" formControlName="address" placeholder="Ulica i broj, grad" maxlength="250" autocomplete="street-address" />
+          @if (googleMapsCheckUrl; as mapsUrl) {
+            <a class="maps-check-btn" [href]="mapsUrl" target="_blank" rel="noopener noreferrer" title="Provjeri adresu na Google Maps">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Provjeri na mapi</span>
+            </a>
+          } @else {
+            <button type="button" class="maps-check-btn is-disabled" disabled title="Prvo unesite adresu">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Provjeri na mapi</span>
+            </button>
+          }
+        </div>
+        @if (fieldError('address')) {
+          <small class="error">{{ fieldError('address') }}</small>
+        }
+      </div>
+    </div>
+
+    <!-- Section 3: Prezentacija -->
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-brand" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </span>
+        <div>
+          <h2>Prezentacija</h2>
+          <p>Logo i opis koji klijenti vide na javnoj stranici</p>
+        </div>
+      </header>
+
+      <div class="field">
+        <label for="bp-logo">Logo (URL)</label>
+        <div class="logo-row">
+          <div class="logo-url-wrap">
+            <input id="bp-logo" type="url" formControlName="logoUrl" placeholder="https://..." />
+          </div>
+          <div class="logo-row-actions">
+            @if (form.get('logoUrl')?.value && !logoLoadFailed) {
+              <img
+                [src]="form.get('logoUrl')?.value"
+                alt="Logo preview"
+                class="logo-preview-img"
+                (load)="logoLoadFailed = false"
+                (error)="logoLoadFailed = true"
+              />
+            } @else {
+              <div class="logo-placeholder" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+            }
+            <label
+              class="logo-pick"
+              [class.is-busy]="uploadingLogo"
+              [class.is-disabled]="uploadingLogo || saving"
+            >
+              @if (uploadingLogo) {
+                <span>Upload…</span>
+              } @else {
+                <span>{{ form.get('logoUrl')?.value ? 'Promijeni sliku' : 'Odaberi sliku' }}</span>
+              }
+              <input
+                #logoFile
+                type="file"
+                accept=".jpg,.jpeg,.png,.webp,image/*"
+                [disabled]="uploadingLogo || saving"
+                (change)="onLogoSelected($event)"
+                hidden
+              />
+            </label>
+            @if (form.get('logoUrl')?.value) {
+              <button type="button" class="btn-secondary" (click)="clearLogo()" [disabled]="uploadingLogo || saving">Ukloni</button>
+            }
+          </div>
+        </div>
+        <small class="hint">Opcionalno · Direktan URL ili odabir s računara (JPG, PNG ili WEBP · do 5 MB). URL se popuni automatski nakon uploada.</small>
+      </div>
+
+      <div class="field">
+        <label for="bp-description">Opis biznisa</label>
+        <textarea id="bp-description" formControlName="description" placeholder="Kratki opis salona — usluge, atmosfera, iskustvo..." maxlength="1000"></textarea>
+        <small class="hint">Opcionalno · Maksimalno 1000 karaktera</small>
+      </div>
+    </div>
+
+    <div class="form-cta">
+      <button type="submit" class="submit-btn" [disabled]="saving">
+        @if (saving) {
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span>Čuvanje...</span>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Sačuvaj izmjene</span>
+        }
+      </button>
+      @if (message) {
+        <p class="form-success" role="status">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>{{ message }}</span>
+        </p>
+      }
+    </div>
+  </form>
+
+  <!-- Security card: separate form so half-typed passwords don't block the
+       business-info save above. Submitting revokes all refresh tokens. -->
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="profile-card security-card">
+    <div class="form-section">
+      <header class="section-header">
+        <span class="section-icon section-icon-security" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </span>
+        <div>
+          <h2>Sigurnost naloga</h2>
+          <p>Promjeni lozinku za prijavu u admin panel</p>
+        </div>
+      </header>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="bp-current-pw">Trenutna lozinka <span class="req">*</span></label>
+          <div class="pw-input-wrap">
+            <input
+              id="bp-current-pw"
+              [type]="showCurrentPassword ? 'text' : 'password'"
+              formControlName="currentPassword"
+              autocomplete="current-password"
+              placeholder="Tvoja trenutna lozinka"
+            />
+            <button type="button" class="reveal-btn" (click)="toggleCurrentPassword()" [attr.aria-label]="showCurrentPassword ? 'Sakrij lozinku' : 'Prikaži lozinku'">
+              @if (showCurrentPassword) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              }
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bp-new-pw">Nova lozinka <span class="req">*</span></label>
+          <div class="pw-input-wrap">
+            <input
+              id="bp-new-pw"
+              [type]="showNewPassword ? 'text' : 'password'"
+              formControlName="newPassword"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="Najmanje 6 karaktera"
+            />
+            <button type="button" class="reveal-btn" (click)="toggleNewPassword()" [attr.aria-label]="showNewPassword ? 'Sakrij lozinku' : 'Prikaži lozinku'">
+              @if (showNewPassword) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              }
+            </button>
+          </div>
+          <small class="hint">Minimalno 6, preporučeno 10+ karaktera.</small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bp-confirm-pw">Potvrdi novu lozinku <span class="req">*</span></label>
+        <input
+          id="bp-confirm-pw"
+          [type]="showNewPassword ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+          placeholder="Ponovi novu lozinku"
+        />
+      </div>
+
+      @if (passwordError) {
+        <p class="security-error" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>{{ passwordError }}</span>
+        </p>
+      }
+    </div>
+
+    <div class="form-cta">
+      <button type="submit" class="submit-btn submit-btn-secondary" [disabled]="changingPassword">
+        @if (changingPassword) {
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span>Mijenjanje...</span>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Promijeni lozinku</span>
+        }
+      </button>
+      @if (passwordSuccess) {
+        <p class="form-success" role="status">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>{{ passwordSuccess }}</span>
+        </p>
+      }
+    </div>
+  </form>
+</section>

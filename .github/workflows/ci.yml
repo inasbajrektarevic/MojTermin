@@ -1,0 +1,149 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+
+# Cancel a previous run on the same ref when a new commit lands.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (build + test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore MojTermin.Api.sln
+
+      - name: Build (Release)
+        run: dotnet build MojTermin.Api.sln --configuration Release --no-restore --nologo
+
+      - name: Test
+        run: |
+          dotnet test MojTermin.Api.sln \
+            --configuration Release \
+            --no-build \
+            --nologo \
+            --logger "trx;LogFileName=test-results.trx" \
+            --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: TestResults/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Publish API artifact
+        if: github.event_name == 'push'
+        run: |
+          dotnet publish MojTermin.Api/MojTermin.Api.csproj \
+            --configuration Release \
+            --no-build \
+            --output ./_publish_api \
+            /p:UseAppHost=false
+
+      - name: Upload API artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mojtermin-api-${{ github.sha }}
+          path: ./_publish_api/
+          retention-days: 30
+
+  frontend:
+    name: Frontend (build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mojtermin-web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+          cache-dependency-path: mojtermin-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint (only if script defined)
+        run: |
+          if npm run | grep -q '^  lint'; then
+            npm run lint --if-present
+          fi
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Upload frontend artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mojtermin-web-${{ github.sha }}
+          path: mojtermin-web/dist/mojtermin-web/browser/
+          retention-days: 30
+
+  docker:
+    name: Docker images (build only)
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    if: github.event_name == 'push'
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.api
+          push: false
+          tags: mojtermin-api:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.web
+          push: false
+          tags: mojtermin-web:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

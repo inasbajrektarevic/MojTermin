@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1.6
+# Build context for this Dockerfile must be the solution root (where MojTermin.Api.sln lives).
+# ---- Build stage ----
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Restore first, then build — keeps the restore layer cached when only sources change.
+COPY ["MojTermin.Api/MojTermin.Api.csproj", "MojTermin.Api/"]
+RUN dotnet restore "MojTermin.Api/MojTermin.Api.csproj"
+
+COPY MojTermin.Api/ MojTermin.Api/
+RUN dotnet publish "MojTermin.Api/MojTermin.Api.csproj" \
+    -c Release \
+    -o /app/publish \
+    /p:UseAppHost=false
+
+# ---- Runtime stage ----
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Drop privileges. .NET 8 images already provide a non-root 'app' user, but we
+# create our own to make the uid stable across CI/CD.
+RUN groupadd --system --gid 1654 mojtermin \
+ && useradd --system --uid 1654 --gid mojtermin --shell /usr/sbin/nologin mojtermin
+
+COPY --from=build /app/publish .
+
+# Pre-create the uploads tree so the non-root user can write at runtime.
+RUN mkdir -p /app/wwwroot/uploads/logos \
+ && chown -R mojtermin:mojtermin /app
+
+USER mojtermin
+
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DOTNET_RUNNING_IN_CONTAINER=true
+ENV DOTNET_NOLOGO=true
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:8080/health || exit 1
+
+ENTRYPOINT ["dotnet", "MojTermin.Api.dll"]

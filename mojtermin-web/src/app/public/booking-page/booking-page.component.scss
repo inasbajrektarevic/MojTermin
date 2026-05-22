@@ -1,0 +1,377 @@
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.2rem;
+}
+
+// Honeypot field. Visually removed from the page in every way (off-screen,
+// 0×0, no pointer events, no keyboard focus) but still rendered so dumb form
+// bots see and fill it. We avoid `display:none` and `visibility:hidden`
+// because some headless browsers / bots explicitly skip those.
+.honeypot-field {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+form {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.phone-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 45%) 1fr;
+  gap: 0.6rem;
+}
+
+.country-picker {
+  position: relative;
+}
+
+.country-flag-preview {
+  width: 22px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--border-soft);
+}
+
+.country-picker-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  justify-content: flex-start;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: none;
+  font-weight: 500;
+}
+
+.country-picker-trigger:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--surface);
+}
+
+.country-picker-caret {
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.country-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  max-height: 260px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+}
+
+.country-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  justify-content: flex-start;
+  padding: 0.55rem 0.7rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+  font-weight: 500;
+}
+
+.country-option:hover {
+  background: var(--link-hover-bg);
+  transform: none;
+  box-shadow: none;
+}
+
+.country-option-flag {
+  width: 22px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--border-soft);
+}
+
+@media (max-width: 640px) {
+  .phone-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+textarea {
+  min-height: 90px;
+}
+
+.booking-success {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, #16a34a 22%, var(--border-soft) 78%);
+  border-radius: 18px;
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+  padding: 2rem 1.4rem 1.5rem;
+  display: grid;
+  gap: 0.85rem;
+  text-align: center;
+  isolation: isolate;
+}
+
+// Soft radial glow behind the checkmark — gives the card a celebratory feel
+// without going full confetti. Sits below content via z-index isolation.
+.booking-success-burst {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.22) 0%, rgba(34, 197, 94, 0) 65%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.booking-success-check {
+  margin: 0.2rem auto 0.15rem;
+  width: 96px;
+  height: 96px;
+  color: #16a34a;
+}
+
+.booking-success-check svg {
+  width: 100%;
+  height: 100%;
+}
+
+.booking-success-check .check-circle {
+  stroke: currentColor;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: success-circle-draw 0.55s ease-out 0.05s forwards;
+}
+
+.booking-success-check .check-mark {
+  stroke: currentColor;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: success-mark-draw 0.4s ease-out 0.55s forwards;
+}
+
+@keyframes success-circle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes success-mark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.booking-success h2 {
+  margin: 0;
+  font-size: 1.55rem;
+  color: #15803d;
+  letter-spacing: -0.01em;
+}
+
+.booking-success-lead {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.booking-success-lead strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.booking-summary {
+  margin: 0.5rem 0 0.2rem;
+  display: grid;
+  gap: 0.6rem;
+  text-align: left;
+  background: color-mix(in srgb, #16a34a 4%, #ffffff 96%);
+  border: 1px solid color-mix(in srgb, #16a34a 18%, #e5e7eb 82%);
+  border-radius: 14px;
+  padding: 0.95rem 1.05rem;
+}
+
+.booking-summary > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.booking-summary dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.booking-summary dt svg {
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.booking-summary dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.booking-summary .muted {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.booking-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.inbox-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #ffffff;
+  border: 1px solid transparent;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.inbox-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.24);
+}
+
+// Each provider gets its brand color so users instantly recognize the target.
+.inbox-btn-gmail {
+  background: linear-gradient(135deg, #ea4335 0%, #d33b2c 100%);
+}
+
+.inbox-btn-outlook {
+  background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+}
+
+.inbox-btn-yahoo {
+  background: linear-gradient(135deg, #6001d2 0%, #410093 100%);
+}
+
+.inbox-btn-icloud {
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+}
+
+.inbox-btn-proton {
+  background: linear-gradient(135deg, #6d4aff 0%, #4f31d1 100%);
+}
+
+.inbox-btn-aol {
+  background: linear-gradient(135deg, #0066ff 0%, #0049b8 100%);
+}
+
+.inbox-btn-generic {
+  background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
+}
+
+.inbox-hint-generic {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.new-booking-btn {
+  padding: 0.75rem 1.2rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+}
+
+.new-booking-btn:hover {
+  background: color-mix(in srgb, var(--surface) 85%, #f1f5f9 15%);
+  border-color: color-mix(in srgb, var(--border) 60%, #94a3b8 40%);
+  transform: translateY(-1px);
+}
+
+.booking-success-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding-top: 0.5rem;
+  border-top: 1px dashed color-mix(in srgb, var(--border-soft) 60%, #cbd5e1 40%);
+  line-height: 1.5;
+}
+
+.booking-success-hint strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+// Respect reduced-motion preference — skip the animation, draw final state.
+@media (prefers-reduced-motion: reduce) {
+  .booking-success-check .check-circle,
+  .booking-success-check .check-mark {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .booking-success {
+    padding: 1.4rem 1rem 1.2rem;
+  }
+
+  .booking-summary > div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}

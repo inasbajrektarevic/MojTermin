@@ -1,0 +1,132 @@
+@use '../admin-shared';
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  border: 1px solid #dbe6ff;
+  border-radius: 16px;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(135deg, #eff4ff 0%, #f8fbff 58%, #eef8ff 100%);
+}
+
+.hero-main {
+  flex: 1 1 280px;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #2a63d4;
+}
+
+h1 {
+  margin: 0;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+}
+
+.export-box {
+  flex: 0 1 320px;
+  background: #ffffff;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.75rem;
+
+  h3 {
+    margin: 0 0 0.55rem;
+    font-size: 0.88rem;
+  }
+}
+
+.export-row {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 0.4rem;
+  align-items: center;
+  margin-bottom: 0.45rem;
+
+  label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+}
+
+.export-btn {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.card {
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1rem 1.05rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(19, 33, 68, 0.08);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-strong);
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f6ff;
+  font-size: 1rem;
+}
+
+.card p {
+  margin: 0.35rem 0 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.card-primary {
+  border-color: #d9e6ff;
+}
+
+.card-accent {
+  border-color: #e2defe;
+}
+
+.card-success {
+  border-color: #d2f4df;
+}
+
+.card-warning {
+  border-color: #ffe8bf;
+}

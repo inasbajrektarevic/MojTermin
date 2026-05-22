@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1.6
+# Build context for this Dockerfile must be the solution root.
+# ---- Build stage ----
+FROM node:20-alpine AS build
+WORKDIR /src
+
+# Restore deps via lockfile first to cache the npm install layer.
+COPY mojtermin-web/package.json mojtermin-web/package-lock.json* ./
+RUN npm ci --no-audit --no-fund
+
+COPY mojtermin-web/ ./
+RUN npm run build
+
+# ---- Runtime stage (Nginx serving the static bundle) ----
+FROM nginx:1.27-alpine AS runtime
+
+# Angular emits hashed assets under dist/mojtermin-web/browser by default in v18.
+COPY --from=build /src/dist/mojtermin-web/browser /usr/share/nginx/html
+COPY mojtermin-web/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:8080/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

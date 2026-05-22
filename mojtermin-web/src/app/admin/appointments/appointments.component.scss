@@ -1,0 +1,59 @@
+@use '../admin-shared';
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  &.pending {
+    background: #fff7e6;
+    color: #9a6700;
+    border-color: #f0d9a7;
+  }
+
+  &.confirmed {
+    background: #ecfdf3;
+    color: #027a48;
+    border-color: #a6f4c5;
+  }
+
+  &.rejected {
+    background: #fff1f3;
+    color: #c01048;
+    border-color: #fbcfe8;
+  }
+
+  &.cancelled {
+    background: #f3f4f6;
+    color: #4b5563;
+    border-color: #d1d5db;
+  }
+
+  &.completed {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+  }
+}
+
+@media (max-width: 720px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}

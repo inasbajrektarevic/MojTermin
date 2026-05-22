@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f766e"/><stop offset="100%" stop-color="#059669"/></linearGradient></defs>
+  <rect width="1200" height="420" fill="url(#g)"/>
+  <rect x="100" y="80" width="180" height="260" rx="14" fill="#ffffff" opacity="0.14"/>
+  <rect x="160" y="130" width="26" height="26" fill="#ffffff" opacity="0.3"/>
+  <rect x="200" y="130" width="26" height="26" fill="#ffffff" opacity="0.3"/>
+  <text x="340" y="230" fill="#ffffff" font-size="68" font-family="Segoe UI, Arial" font-weight="700">Apartment Stay</text>
+</svg>

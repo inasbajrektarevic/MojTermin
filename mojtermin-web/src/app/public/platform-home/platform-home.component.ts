@@ -5,8 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { SiteConfigService } from '../../core/services/site-config.service';
 import { ToastService } from '../../core/services/toast.service';
-import { environment } from '../../../environments/environment';
-import { salesContactPhoneDisplay, salesContactTelHref } from '../../core/utils/sales-contact.utils';
+import { salesContactPhoneDisplay, salesContactTelHref, hasSalesContactPhone } from '../../core/utils/sales-contact.utils';
 
 @Component({
   selector: 'app-platform-home',
@@ -21,9 +20,8 @@ export class PlatformHomeComponent implements OnInit {
   private readonly siteConfig = inject(SiteConfigService);
   private readonly toastService = inject(ToastService);
 
-  // The demo tenant is only seeded in development. Hide the demo CTA in
-  // production builds so the link does not 404 for real users.
-  readonly showDemoLink = !environment.production;
+  // Public demo tenant is seeded on the API (dev + production) for marketing.
+  readonly showDemoLink = true;
   /** Mirrors GET /api/public/site-config; null until the first response. */
   allowPublicReg: boolean | null = null;
   slug = '';
@@ -41,6 +39,10 @@ export class PlatformHomeComponent implements OnInit {
 
   get salesPhoneDisplay(): string {
     return salesContactPhoneDisplay();
+  }
+
+  get hasSalesPhone(): boolean {
+    return hasSalesContactPhone();
   }
 
   goToBusiness(): void {

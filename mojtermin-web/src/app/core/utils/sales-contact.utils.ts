@@ -13,3 +13,12 @@ export function salesContactTelHref(): string {
   }
   return cleaned.startsWith('+') ? `tel:${cleaned}` : `tel:+${cleaned}`;
 }
+
+/** True when a real sales phone is configured (not empty / placeholder). */
+export function hasSalesContactPhone(): boolean {
+  const raw = salesContactPhoneDisplay();
+  if (!raw) {
+    return false;
+  }
+  return raw.replace(/\s/g, '') !== '+38761000000';
+}

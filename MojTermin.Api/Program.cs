@@ -320,15 +320,8 @@ using (var scope = app.Services.CreateScope())
         dbContext.Database.EnsureCreated();
     }
 
-    // Demo seed (business, owner, services, working hours) runs ONLY in Development.
-    // Production tenants: keep Auth:AllowPublicRegistration=false and onboard manually
-    // (see README). When you temporarily enable registration to create a tenant,
-    // use POST /api/businesses/register then turn the flag off again.
-    if (!app.Environment.IsDevelopment())
-    {
-        goto endSeed;
-    }
-
+    // Demo showcase tenant (public booking page) — seeded in all environments.
+    // Demo owner login (Owner123!) is dev-only; production gets business + services only.
     var demoBusiness = dbContext.Businesses.FirstOrDefault(x => x.Slug == "demo-salon");
     if (demoBusiness is null)
     {
@@ -368,6 +361,8 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.SaveChanges();
 
+    if (app.Environment.IsDevelopment())
+    {
     var ownerUser = dbContext.AppUsers.FirstOrDefault(x => x.BusinessId == demoBusiness.Id && x.Role == "Owner");
     if (ownerUser is null)
     {
@@ -396,6 +391,9 @@ using (var scope = app.Services.CreateScope())
         // defaults to 0. Flip it on so the demo nalog ne ostane zaključan.
         ownerUser.EmailVerified = true;
         ownerUser.EmailVerifiedAtUtc = DateTime.UtcNow;
+    }
+
+    dbContext.SaveChanges();
     }
 
     // Demo service images use stable Unsplash photo IDs (free license).

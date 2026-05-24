@@ -7,7 +7,7 @@ import { ApiService } from '../../core/services/api.service';
 import { SiteConfigService } from '../../core/services/site-config.service';
 import { ToastService } from '../../core/services/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { salesContactPhoneDisplay, salesContactTelHref } from '../../core/utils/sales-contact.utils';
+import { salesContactPhoneDisplay, salesContactTelHref, hasSalesContactPhone } from '../../core/utils/sales-contact.utils';
 import { RegisterBusinessRequest, RegisterBusinessResponse } from '../../shared/models/business.models';
 import {
   PhoneCountryOption,
@@ -105,6 +105,10 @@ export class RegisterBusinessComponent implements OnInit {
 
   get salesPhoneDisplay(): string {
     return salesContactPhoneDisplay();
+  }
+
+  get hasSalesPhone(): boolean {
+    return hasSalesContactPhone();
   }
 
   submit(): void {

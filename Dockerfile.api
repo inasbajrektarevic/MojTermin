@@ -18,10 +18,9 @@ RUN dotnet publish "MojTermin.Api/MojTermin.Api.csproj" \
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Drop privileges. .NET 8 images already provide a non-root 'app' user, but we
-# create our own to make the uid stable across CI/CD.
-RUN groupadd --system --gid 1654 mojtermin \
- && useradd --system --uid 1654 --gid mojtermin --shell /usr/sbin/nologin mojtermin
+# Drop privileges — avoid fixed uid/gid (1654 can already exist in the base image).
+RUN groupadd --system mojtermin \
+ && useradd --system --gid mojtermin --shell /usr/sbin/nologin mojtermin
 
 COPY --from=build /app/publish .
 

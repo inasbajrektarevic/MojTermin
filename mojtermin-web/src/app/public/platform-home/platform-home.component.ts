@@ -5,7 +5,12 @@ import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { SiteConfigService } from '../../core/services/site-config.service';
 import { ToastService } from '../../core/services/toast.service';
-import { salesContactPhoneDisplay, salesContactTelHref, hasSalesContactPhone } from '../../core/utils/sales-contact.utils';
+import {
+  salesContactPhoneDisplay,
+  salesContactTelHref,
+  hasSalesContactPhone,
+  supportContactMailtoHref
+} from '../../core/utils/sales-contact.utils';
 
 @Component({
   selector: 'app-platform-home',
@@ -43,6 +48,10 @@ export class PlatformHomeComponent implements OnInit {
 
   get hasSalesPhone(): boolean {
     return hasSalesContactPhone();
+  }
+
+  get supportMailtoHref(): string {
+    return supportContactMailtoHref();
   }
 
   goToBusiness(): void {

@@ -47,7 +47,7 @@
         <span>Kontaktiraj za demo podršku <span class="cta-tel-inline-num">{{ salesPhoneDisplay }}</span></span>
       </a>
       } @else {
-      <a href="mailto:podrska@mojtermin.ai" class="cta-btn cta-ghost">
+      <a [href]="supportMailtoHref" class="cta-btn cta-ghost">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
           <polyline points="22,6 12,13 2,6"></polyline>
@@ -377,9 +377,9 @@
       @if (hasSalesPhone) {
       <li><a [href]="salesTelHref">Demo podrška</a></li>
       } @else {
-      <li><a href="mailto:podrska@mojtermin.ai">Demo podrška</a></li>
+      <li><a [href]="supportMailtoHref">Demo podrška</a></li>
       }
-      <li><a href="mailto:podrska&#64;mojtermin.ai">Podrška</a></li>
+      <li><a [href]="supportMailtoHref">Podrška</a></li>
     </ul>
     <p class="footer-meta">© 2026 MojTermin · Made in Bosnia &amp; Herzegovina</p>
   </div>

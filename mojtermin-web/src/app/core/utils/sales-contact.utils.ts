@@ -14,6 +14,16 @@ export function salesContactTelHref(): string {
   return cleaned.startsWith('+') ? `tel:${cleaned}` : `tel:+${cleaned}`;
 }
 
+/** Email za demo podršku / kontakt na početnoj. */
+export function supportContactEmailDisplay(): string {
+  return (environment.supportContactEmail ?? '').trim();
+}
+
+export function supportContactMailtoHref(): string {
+  const email = supportContactEmailDisplay();
+  return email ? `mailto:${email}` : '#';
+}
+
 /** True when a real sales phone is configured (not empty / placeholder). */
 export function hasSalesContactPhone(): boolean {
   const raw = salesContactPhoneDisplay();

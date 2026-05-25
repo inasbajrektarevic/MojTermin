@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -16,6 +16,7 @@ import {
   phoneNumberValidator,
   toInternationalPhone
 } from '../../shared/phone/phone.utils';
+import { resolveUploadAssetUrl } from '../../core/utils/asset-url.utils';
 
 @Component({
   selector: 'app-register-business',
@@ -24,7 +25,7 @@ import {
   templateUrl: './register-business.component.html',
   styleUrl: './register-business.component.scss'
 })
-export class RegisterBusinessComponent implements OnInit {
+export class RegisterBusinessComponent implements OnInit, OnDestroy {
   private readonly siteConfig = inject(SiteConfigService);
   private readonly fb = inject(FormBuilder);
   private readonly emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,6 +43,7 @@ export class RegisterBusinessComponent implements OnInit {
   uploadingLogo = false;
   error = '';
   logoPreviewUrl = '';
+  private logoObjectUrl: string | null = null;
   /**
    * Set after a successful registration so the template can switch from the
    * form to the "Provjeri email" success card. We keep the response in memory
@@ -228,6 +230,10 @@ export class RegisterBusinessComponent implements OnInit {
     return `mailto:${email}`;
   }
 
+  ngOnDestroy(): void {
+    this.revokeLogoObjectUrl();
+  }
+
   onLogoSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
@@ -244,20 +250,35 @@ export class RegisterBusinessComponent implements OnInit {
       return;
     }
 
+    this.revokeLogoObjectUrl();
+    this.logoObjectUrl = URL.createObjectURL(file);
+    this.logoPreviewUrl = this.logoObjectUrl;
+
     this.uploadingLogo = true;
     this.error = '';
     this.apiService.uploadLogo(file).subscribe({
       next: (response) => {
         this.uploadingLogo = false;
-        this.form.patchValue({ logoUrl: response.url });
-        this.logoPreviewUrl = response.url;
+        const resolved = resolveUploadAssetUrl(response.url);
+        this.form.patchValue({ logoUrl: resolved });
+        this.revokeLogoObjectUrl();
+        this.logoPreviewUrl = resolved;
         this.toastService.success('Logo je uspješno uploadovan.');
       },
       error: () => {
         this.uploadingLogo = false;
+        this.revokeLogoObjectUrl();
+        this.logoPreviewUrl = '';
         this.error = 'Upload loga nije uspio. Pokušajte ponovo.';
       }
     });
+  }
+
+  private revokeLogoObjectUrl(): void {
+    if (this.logoObjectUrl) {
+      URL.revokeObjectURL(this.logoObjectUrl);
+      this.logoObjectUrl = null;
+    }
   }
 
   private validateLogoFile(file: File): string | null {

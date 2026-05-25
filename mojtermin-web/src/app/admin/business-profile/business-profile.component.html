@@ -151,9 +151,9 @@
             <input id="bp-logo" type="url" formControlName="logoUrl" placeholder="https://..." />
           </div>
           <div class="logo-row-actions">
-            @if (form.get('logoUrl')?.value && !logoLoadFailed) {
+            @if (logoPreviewSrc && !logoLoadFailed) {
               <img
-                [src]="form.get('logoUrl')?.value"
+                [src]="logoPreviewSrc"
                 alt="Logo preview"
                 class="logo-preview-img"
                 (load)="logoLoadFailed = false"

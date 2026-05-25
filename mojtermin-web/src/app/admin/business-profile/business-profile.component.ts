@@ -7,6 +7,7 @@ import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { ToastService } from '../../core/services/toast.service';
 import { AuthError, Business } from '../../shared/models/business.models';
+import { resolveUploadAssetUrl } from '../../core/utils/asset-url.utils';
 
 @Component({
   selector: 'app-business-profile',
@@ -65,11 +66,11 @@ export class BusinessProfileComponent implements OnInit {
   ngOnInit(): void {
     const business = this.route.snapshot.data['business'] as Business | undefined;
     if (business) {
-      this.form.patchValue(business);
+      this.patchBusinessForm(business);
       this.savedSlug = (business.slug ?? '').trim();
     } else {
       this.apiService.getCurrentBusiness().subscribe((row) => {
-        this.form.patchValue(row);
+        this.patchBusinessForm(row);
         this.savedSlug = (row.slug ?? '').trim();
       });
     }
@@ -77,6 +78,10 @@ export class BusinessProfileComponent implements OnInit {
     this.form.get('logoUrl')?.valueChanges.subscribe(() => {
       this.logoLoadFailed = false;
     });
+  }
+
+  get logoPreviewSrc(): string {
+    return resolveUploadAssetUrl(this.form.get('logoUrl')?.value);
   }
 
   /** Builds a link to the public business page using the slug as it was last saved on the server. */
@@ -215,7 +220,8 @@ export class BusinessProfileComponent implements OnInit {
         this.uploadingLogo = false;
         input.value = '';
         this.logoLoadFailed = false;
-        this.form.patchValue({ logoUrl: res.url });
+        const resolved = resolveUploadAssetUrl(res.url);
+        this.form.patchValue({ logoUrl: resolved });
         this.toastService.success('Logo je uploadovan.');
       },
       error: () => {
@@ -237,6 +243,13 @@ export class BusinessProfileComponent implements OnInit {
     if (el) {
       el.value = '';
     }
+  }
+
+  private patchBusinessForm(business: Business): void {
+    this.form.patchValue({
+      ...business,
+      logoUrl: resolveUploadAssetUrl(business.logoUrl) || ''
+    });
   }
 
   private validateLogoFile(file: File): string | null {

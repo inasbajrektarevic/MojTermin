@@ -71,6 +71,23 @@ body {
   a.cta-btn {
     min-height: 44px;
   }
+
+  /* Form labels — component SCSS often sets ~0.8rem; bump for phone readability */
+  body .field-label,
+  body .field > label:not(.sr-only),
+  body .field > span.field-label,
+  body .export-row label,
+  body .staff-filter-label,
+  body .page label:not(.sr-only) {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  body .export-box h3,
+  body .form-section-title {
+    font-size: 1rem;
+  }
 }
 
 input,

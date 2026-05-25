@@ -71,9 +71,15 @@
 }
 
 .field-label {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .field-label {
+    font-size: 1rem;
+  }
 }
 
 .login-card input {

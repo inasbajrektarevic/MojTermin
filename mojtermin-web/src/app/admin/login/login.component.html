@@ -1,52 +1,64 @@
-<section class="page">
-  <h1>Admin prijava</h1>
-  <p class="muted">Biznis: <strong>{{ slug }}</strong></p>
-  <form [formGroup]="form" (ngSubmit)="submit()" class="card">
-    <label>
-      Username ili email
-      <input type="text" formControlName="usernameOrEmail" />
-    </label>
-    @if (fieldError('usernameOrEmail')) {
-      <p class="error">{{ fieldError('usernameOrEmail') }}</p>
-    }
-
-    <label>
-      Lozinka
-      <input type="password" formControlName="password" />
-    </label>
-    @if (fieldError('password')) {
-      <p class="error">{{ fieldError('password') }}</p>
-    }
-
-    @if (error) {
-      <p class="error">{{ error }}</p>
-    }
-
-    @if (unverifiedEmail) {
-      <div class="unverified-banner">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
+<section class="login-page">
+  <div class="login-shell">
+    <header class="login-header">
+      <span class="login-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
-        <div class="unverified-text">
-          <strong>Email nije verifikovan</strong>
-          <span>Provjerite inbox na <em>{{ unverifiedEmail }}</em> i kliknite verifikacioni link.</span>
+        MojTermin Admin
+      </span>
+      <h1>Prijava</h1>
+      <p class="login-slug">Biznis: <strong>{{ slug }}</strong></p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-card">
+      <label class="field">
+        <span class="field-label">Username ili email</span>
+        <input type="text" formControlName="usernameOrEmail" autocomplete="username" />
+      </label>
+      @if (fieldError('usernameOrEmail')) {
+        <p class="error">{{ fieldError('usernameOrEmail') }}</p>
+      }
+
+      <label class="field">
+        <span class="field-label">Lozinka</span>
+        <input type="password" formControlName="password" autocomplete="current-password" />
+      </label>
+      @if (fieldError('password')) {
+        <p class="error">{{ fieldError('password') }}</p>
+      }
+
+      @if (error) {
+        <p class="error-banner">{{ error }}</p>
+      }
+
+      @if (unverifiedEmail) {
+        <div class="unverified-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <div class="unverified-text">
+            <strong>Email nije verifikovan</strong>
+            <span>Provjerite inbox na <em>{{ unverifiedEmail }}</em> i kliknite verifikacioni link.</span>
+          </div>
+          <button type="button" class="resend-btn" (click)="resendVerification()" [disabled]="resending">
+            @if (resending) {
+              <span class="btn-spinner-sm" aria-hidden="true"></span>
+              <span>Slanje...</span>
+            } @else {
+              <span>Pošalji novi link</span>
+            }
+          </button>
         </div>
-        <button type="button" class="resend-btn" (click)="resendVerification()" [disabled]="resending">
-          @if (resending) {
-            <span class="btn-spinner-sm" aria-hidden="true"></span>
-            <span>Slanje...</span>
-          } @else {
-            <span>Pošalji novi link</span>
-          }
-        </button>
-      </div>
-    }
+      }
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Prijava...' : 'Prijavi se' }}
-    </button>
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        {{ loading ? 'Prijava...' : 'Prijavi se' }}
+      </button>
 
-    <a routerLink="/forgot-password" class="forgot-link">Zaboravljena lozinka?</a>
-  </form>
+      <a routerLink="/forgot-password" class="forgot-link">Zaboravljena lozinka?</a>
+    </form>
+  </div>
 </section>

@@ -1,22 +1,56 @@
-<nav class="top-nav">
-  <a routerLink="dashboard">Dashboard</a>
-  <a routerLink="appointments">Termini</a>
-  <a routerLink="services">Usluge</a>
-  <a routerLink="staff">Zaposlenici</a>
-  <a routerLink="clients">Klijenti</a>
-  <a routerLink="working-hours">Radni sati</a>
-  <a routerLink="notifications">
-    Notifikacije
-    @if (pendingAppointments > 0) {
-      <span class="badge">{{ pendingAppointments }}</span>
-    }
-  </a>
-  <a routerLink="audit">Audit</a>
-  <a routerLink="business-profile">Profil</a>
-  <a [routerLink]="['/b', slug]">Public</a>
-  <button class="btn-secondary" (click)="logout()">Logout</button>
-</nav>
+<div class="admin-shell" [class.nav-open]="navOpen">
+  <header class="admin-header">
+    <div class="admin-header-brand">
+      <span class="admin-logo">MojTermin</span>
+      @if (slug) {
+        <span class="admin-slug">/ {{ slug }}</span>
+      }
+    </div>
+    <button
+      type="button"
+      class="nav-toggle"
+      (click)="toggleNav()"
+      [attr.aria-expanded]="navOpen"
+      aria-controls="admin-nav"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        @if (navOpen) {
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        } @else {
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        }
+      </svg>
+      <span>{{ navOpen ? 'Zatvori' : 'Meni' }}</span>
+    </button>
+  </header>
 
-<main class="content">
-  <router-outlet />
-</main>
+  @if (navOpen) {
+    <button type="button" class="nav-backdrop" aria-label="Zatvori meni" (click)="closeNav()"></button>
+  }
+
+  <nav id="admin-nav" class="top-nav" [class.is-open]="navOpen">
+    <a routerLink="dashboard" routerLinkActive="is-active" (click)="closeNav()">Dashboard</a>
+    <a routerLink="appointments" routerLinkActive="is-active" (click)="closeNav()">Termini</a>
+    <a routerLink="services" routerLinkActive="is-active" (click)="closeNav()">Usluge</a>
+    <a routerLink="staff" routerLinkActive="is-active" (click)="closeNav()">Zaposlenici</a>
+    <a routerLink="clients" routerLinkActive="is-active" (click)="closeNav()">Klijenti</a>
+    <a routerLink="working-hours" routerLinkActive="is-active" (click)="closeNav()">Radni sati</a>
+    <a routerLink="notifications" routerLinkActive="is-active" (click)="closeNav()">
+      Notifikacije
+      @if (pendingAppointments > 0) {
+        <span class="badge">{{ pendingAppointments }}</span>
+      }
+    </a>
+    <a routerLink="audit" routerLinkActive="is-active" (click)="closeNav()">Audit</a>
+    <a routerLink="business-profile" routerLinkActive="is-active" (click)="closeNav()">Profil</a>
+    <a [routerLink]="['/b', slug]" class="nav-public" (click)="closeNav()">Javna stranica</a>
+    <button type="button" class="nav-logout btn-secondary" (click)="logout()">Odjava</button>
+  </nav>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

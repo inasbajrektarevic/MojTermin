@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Subscription, interval } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
 import { ApiService } from '../../core/services/api.service';
@@ -8,15 +9,17 @@ import { ToastService } from '../../core/services/toast.service';
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly slug: string;
+  navOpen = false;
   pendingAppointments = 0;
   private lastPendingAppointments: number | null = null;
   private pollingSub?: Subscription;
+  private navCloseSub?: Subscription;
   private visibilityHandler?: () => void;
 
   constructor(
@@ -51,10 +54,23 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     }
 
     this.refreshPendingCount();
+
+    this.navCloseSub = this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
+      this.navOpen = false;
+    });
+  }
+
+  toggleNav(): void {
+    this.navOpen = !this.navOpen;
+  }
+
+  closeNav(): void {
+    this.navOpen = false;
   }
 
   ngOnDestroy(): void {
     this.stopPolling();
+    this.navCloseSub?.unsubscribe();
     if (this.visibilityHandler && typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', this.visibilityHandler);
     }

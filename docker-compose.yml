@@ -47,7 +47,7 @@ services:
       Jwt__Audience: MojTermin.Client
       Jwt__SecretKey: "${JWT_SECRET:?JWT_SECRET must be set in .env (see README, section 'Generisanje sigurnog Jwt__SecretKey')}"
       Jwt__ExpirationMinutes: "480"
-      Auth__AllowPublicRegistration: "false"
+      Auth__AllowPublicRegistration: "${Auth__AllowPublicRegistration:-false}"
       Auth__RefreshTokenExpirationDays: "30"
       Cors__AllowedOrigins__0: "${CORS_ALLOWED_ORIGIN:-http://localhost:8080}"
       ClientApp__BaseUrl: "${CLIENT_APP_BASE_URL:-http://localhost:8080}"

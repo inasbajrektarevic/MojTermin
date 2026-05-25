@@ -120,6 +120,15 @@ form {
 }
 
 @media (max-width: 640px) {
+  .page {
+    padding: 0.85rem max(0.65rem, env(safe-area-inset-left, 0));
+    padding-right: max(0.65rem, env(safe-area-inset-right, 0));
+  }
+
+  form {
+    padding: 0.85rem;
+  }
+
   .phone-row {
     grid-template-columns: 1fr;
   }

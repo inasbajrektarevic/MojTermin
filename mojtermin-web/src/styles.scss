@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 :root {
   color-scheme: light;
   --bg: #f4f7fb;
@@ -50,6 +54,23 @@ body {
   background: radial-gradient(circle at top right, var(--bg-accent) 0%, var(--bg) 45%);
   color: var(--text);
   line-height: 1.5;
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
+}
+
+/* iOS: 16px+ inputs avoid auto-zoom; comfortable tap targets on phones */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  button,
+  a.cta-btn {
+    min-height: 44px;
+  }
 }
 
 input,

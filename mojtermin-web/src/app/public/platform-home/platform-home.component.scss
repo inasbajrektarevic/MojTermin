@@ -666,26 +666,68 @@
   }
 
   .hero h1 {
-    font-size: clamp(1.7rem, 7vw, 2.4rem);
+    font-size: clamp(1.65rem, 7vw, 2.4rem);
+  }
+
+  .gradient-word {
+    white-space: normal;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    padding: 0 0.15rem;
+  }
+
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    margin-top: 1.4rem;
+    padding: 0 0.1rem;
   }
 
   .cta-btn {
     width: 100%;
-    max-width: 340px;
+    max-width: none;
     min-width: 0;
+    font-size: 0.92rem;
+    padding: 0.85rem 1rem;
   }
 
   .cta-row .cta-btn {
     max-width: none;
   }
 
+  .cta-tel-inline-num {
+    white-space: normal;
+  }
+
   .trust-strip {
-    gap: 0.5rem 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
     font-size: 0.82rem;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
   }
 
   .step-num {
     left: 1rem;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .usecase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .access-card {
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
   }
 
   .access-actions {
@@ -704,5 +746,23 @@
   .footer-links {
     justify-content: center;
     flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-badge {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .usecase-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .orb-a,
+  .orb-b,
+  .orb-c {
+    opacity: 0.35;
+    transform: scale(0.65);
   }
 }

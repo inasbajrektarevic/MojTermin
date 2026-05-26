@@ -74,6 +74,7 @@ body {
 
   /* Form labels — component SCSS often sets ~0.8rem; bump for phone readability */
   body .field-label,
+  body .field label:not(.sr-only),
   body .field > label:not(.sr-only),
   body .field > span.field-label,
   body .export-row label,

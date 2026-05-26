@@ -84,107 +84,127 @@
   } @else if (loadError) {
     <p class="error">{{ loadError }}</p>
   } @else if (services.length) {
-    <form [formGroup]="form" (ngSubmit)="submit()" class="grid">
-      <label for="bk-service" class="sr-only">Usluga</label>
-      <select id="bk-service" formControlName="serviceId" (change)="onAvailabilityInputChanged()">
-        <option value="">Odaberi uslugu</option>
-        @for (service of services; track service.id) {
-          <option [value]="service.id">{{ service.name }} ({{ service.durationMinutes }} min)</option>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="booking-form">
+      <div class="field">
+        <label for="bk-service">Usluga <span class="req">*</span></label>
+        <select id="bk-service" formControlName="serviceId" (change)="onAvailabilityInputChanged()">
+          <option value="">Odaberi uslugu</option>
+          @for (service of services; track service.id) {
+            <option [value]="service.id">{{ service.name }} ({{ service.durationMinutes }} min)</option>
+          }
+        </select>
+        @if (fieldError('serviceId')) {
+          <small class="error">{{ fieldError('serviceId') }}</small>
         }
-      </select>
-      @if (fieldError('serviceId')) {
-        <small class="error">{{ fieldError('serviceId') }}</small>
-      }
+      </div>
 
       @if (staffMembers.length) {
-        <label for="bk-staff" class="sr-only">Zaposlenik</label>
-        <select id="bk-staff" formControlName="staffMemberId" (change)="onAvailabilityInputChanged()">
-          <option value="">Odaberi zaposlenika</option>
-          @for (staff of staffMembers; track staff.id) {
-            <option [value]="staff.id">
-              {{ staff.fullName }}{{ staff.title ? ' - ' + staff.title : '' }}
+        <div class="field">
+          <label for="bk-staff">Zaposlenik</label>
+          <select id="bk-staff" formControlName="staffMemberId" (change)="onAvailabilityInputChanged()">
+            <option value="">Odaberi zaposlenika</option>
+            @for (staff of staffMembers; track staff.id) {
+              <option [value]="staff.id">
+                {{ staff.fullName }}{{ staff.title ? ' - ' + staff.title : '' }}
+              </option>
+            }
+          </select>
+        </div>
+      }
+
+      <div class="field">
+        <label for="bk-date">Datum termina <span class="req">*</span></label>
+        <input id="bk-date" type="date" formControlName="appointmentDate" (change)="onAvailabilityInputChanged()" />
+        @if (fieldError('appointmentDate')) {
+          <small class="error">{{ fieldError('appointmentDate') }}</small>
+        }
+      </div>
+
+      @if (loadingAvailability) {
+        <p class="form-hint">Učitavanje slobodnih termina...</p>
+      }
+      @if (availabilityError) {
+        <p class="error form-hint">{{ availabilityError }}</p>
+      }
+
+      <div class="field">
+        <label for="bk-time">Vrijeme termina <span class="req">*</span></label>
+        <select id="bk-time" formControlName="startTime" [disabled]="!slots.length || loadingAvailability">
+          <option value="">Odaberi vrijeme</option>
+          @for (slot of slots; track slot.startTime) {
+            <option [value]="slot.display" [disabled]="!slot.isAvailable">
+              {{ slot.display }}{{ slot.isAvailable ? '' : ' (' + slot.reasonLabel + ')' }}
             </option>
           }
         </select>
-      }
-
-      <label for="bk-date" class="sr-only">Datum termina</label>
-      <input id="bk-date" type="date" formControlName="appointmentDate" (change)="onAvailabilityInputChanged()" />
-      @if (fieldError('appointmentDate')) {
-        <small class="error">{{ fieldError('appointmentDate') }}</small>
-      }
-
-      @if (loadingAvailability) {
-        <small>Učitavanje slobodnih termina...</small>
-      }
-      @if (availabilityError) {
-        <small class="error">{{ availabilityError }}</small>
-      }
-
-      <label for="bk-time" class="sr-only">Vrijeme termina</label>
-      <select id="bk-time" formControlName="startTime" [disabled]="!slots.length || loadingAvailability">
-        <option value="">Odaberi vrijeme</option>
-        @for (slot of slots; track slot.startTime) {
-          <option [value]="slot.display" [disabled]="!slot.isAvailable">
-            {{ slot.display }}{{ slot.isAvailable ? '' : ' (' + slot.reasonLabel + ')' }}
-          </option>
+        @if (fieldError('startTime')) {
+          <small class="error">{{ fieldError('startTime') }}</small>
         }
-      </select>
-      @if (fieldError('startTime')) {
-        <small class="error">{{ fieldError('startTime') }}</small>
-      }
-      <label for="bk-fullname" class="sr-only">Ime i prezime</label>
-      <input id="bk-fullname" type="text" placeholder="Ime i prezime" formControlName="fullName" maxlength="150" autocomplete="name" />
-      @if (fieldError('fullName')) {
-        <small class="error">{{ fieldError('fullName') }}</small>
-      }
-      <div class="phone-row">
-        <div class="country-picker" [class.open]="countryDropdownOpen">
-          <button
-            type="button"
-            class="country-picker-trigger"
-            (click)="toggleCountryDropdown($event)"
-            aria-label="Odaberi državu za broj telefona"
-            [attr.aria-expanded]="countryDropdownOpen"
-          >
-            @if (selectedPhoneCountry) {
-              <img class="country-flag-preview" [src]="selectedPhoneCountry.flagUrl" [alt]="selectedPhoneCountry.name" loading="lazy" />
-              <span>{{ selectedPhoneCountry.iso2.toUpperCase() }} ({{ selectedPhoneCountry.dialCode }})</span>
-            }
-            <span class="country-picker-caret" aria-hidden="true">▾</span>
-          </button>
-          @if (countryDropdownOpen) {
-            <div class="country-dropdown" role="listbox">
-              @for (country of phoneCountries; track country.iso2) {
-                <button type="button" class="country-option" (click)="selectCountry(country.iso2)" role="option">
-                  <img class="country-option-flag" [src]="country.flagUrl" [alt]="country.name" loading="lazy" />
-                  <span>{{ country.iso2.toUpperCase() }} ({{ country.dialCode }})</span>
-                </button>
-              }
-            </div>
-          }
-        </div>
-        <label for="bk-phone" class="sr-only">Broj telefona</label>
-        <input
-          id="bk-phone"
-          type="tel"
-          placeholder="Telefon"
-          formControlName="phoneNumber"
-          maxlength="30"
-          autocomplete="tel"
-          inputmode="numeric"
-        />
       </div>
-      @if (fieldError('phoneNumber')) {
-        <small class="error">{{ fieldError('phoneNumber') }}</small>
-      }
-      <label for="bk-email" class="sr-only">Email adresa</label>
-      <input id="bk-email" type="email" placeholder="Email" formControlName="email" autocomplete="email" />
-      @if (fieldError('email')) {
-        <small class="error">{{ fieldError('email') }}</small>
-      }
-      <label for="bk-note" class="sr-only">Napomena</label>
-      <textarea id="bk-note" placeholder="Napomena (opcionalno)" formControlName="note"></textarea>
+
+      <div class="field">
+        <label for="bk-fullname">Ime i prezime <span class="req">*</span></label>
+        <input id="bk-fullname" type="text" placeholder="npr. Ana Marković" formControlName="fullName" maxlength="150" autocomplete="name" />
+        @if (fieldError('fullName')) {
+          <small class="error">{{ fieldError('fullName') }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="bk-phone">Broj telefona <span class="req">*</span></label>
+        <div class="phone-row">
+          <div class="country-picker" [class.open]="countryDropdownOpen">
+            <button
+              type="button"
+              class="country-picker-trigger"
+              (click)="toggleCountryDropdown($event)"
+              aria-label="Odaberi državu za broj telefona"
+              [attr.aria-expanded]="countryDropdownOpen"
+            >
+              @if (selectedPhoneCountry) {
+                <img class="country-flag-preview" [src]="selectedPhoneCountry.flagUrl" [alt]="selectedPhoneCountry.name" loading="lazy" />
+                <span>{{ selectedPhoneCountry.iso2.toUpperCase() }} ({{ selectedPhoneCountry.dialCode }})</span>
+              }
+              <span class="country-picker-caret" aria-hidden="true">▾</span>
+            </button>
+            @if (countryDropdownOpen) {
+              <div class="country-dropdown" role="listbox">
+                @for (country of phoneCountries; track country.iso2) {
+                  <button type="button" class="country-option" (click)="selectCountry(country.iso2)" role="option">
+                    <img class="country-option-flag" [src]="country.flagUrl" [alt]="country.name" loading="lazy" />
+                    <span>{{ country.iso2.toUpperCase() }} ({{ country.dialCode }})</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+          <input
+            id="bk-phone"
+            type="tel"
+            placeholder="61 234 567"
+            formControlName="phoneNumber"
+            maxlength="30"
+            autocomplete="tel"
+            inputmode="numeric"
+          />
+        </div>
+        @if (fieldError('phoneNumber')) {
+          <small class="error">{{ fieldError('phoneNumber') }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="bk-email">Email adresa <span class="req">*</span></label>
+        <input id="bk-email" type="email" placeholder="npr. ana@email.com" formControlName="email" autocomplete="email" />
+        @if (fieldError('email')) {
+          <small class="error">{{ fieldError('email') }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="bk-note">Napomena</label>
+        <textarea id="bk-note" placeholder="Opcionalno — posebne želje ili pitanja" formControlName="note"></textarea>
+      </div>
 
       <!--
         Honeypot. Hidden from sighted users AND from assistive tech (aria-hidden,

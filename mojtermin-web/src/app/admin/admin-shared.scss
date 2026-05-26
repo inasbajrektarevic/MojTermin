@@ -59,3 +59,44 @@ th {
 tbody tr:hover {
   background: #fbfcff;
 }
+
+/* Form labels — same look as register-business / booking */
+.field,
+.field-stack {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.field label:not(.sr-only):not(.active-box),
+.field-stack > .field-label,
+.field-label,
+.staff-filter-label,
+.timeoff-lbl,
+.export-row label {
+  display: block;
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.005em;
+  line-height: 1.4;
+}
+
+.field label .req,
+.field-label .req {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+@media (max-width: 720px) {
+  .field label:not(.sr-only):not(.active-box),
+  .field-stack > .field-label,
+  .field-label,
+  .staff-filter-label,
+  .timeoff-lbl,
+  .export-row label {
+    font-size: 1.08rem;
+    line-height: 1.45;
+  }
+}

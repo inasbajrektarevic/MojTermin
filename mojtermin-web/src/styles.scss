@@ -79,11 +79,13 @@ body {
   body .field > span.field-label,
   body .export-row label,
   body .staff-filter-label,
-  body .page label:not(.sr-only) {
-    font-size: 1.1rem !important;
+  body .timeoff-lbl,
+  body .page label:not(.sr-only),
+  body .admin-shell label.field-label,
+  body .login-page .field-label {
+    font-size: 1.08rem !important;
     font-weight: 600 !important;
     line-height: 1.45 !important;
-    /* Register has a tighter letter-spacing + darker color */
     letter-spacing: 0.005em !important;
     color: var(--text) !important;
   }

@@ -14,10 +14,22 @@
   </div>
 
   <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
-    <input placeholder="Ime i prezime" formControlName="fullName" />
-    <input placeholder="Pozicija (opcionalno)" formControlName="title" />
-    <input placeholder="Telefon (opcionalno)" formControlName="phone" />
-    <input type="email" placeholder="Email (opcionalno)" formControlName="email" />
+    <div class="field">
+      <label for="staff-fullname">Ime i prezime <span class="req">*</span></label>
+      <input id="staff-fullname" placeholder="npr. Marko Marković" formControlName="fullName" autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="staff-title">Pozicija</label>
+      <input id="staff-title" placeholder="Opcionalno" formControlName="title" />
+    </div>
+    <div class="field">
+      <label for="staff-phone">Telefon</label>
+      <input id="staff-phone" type="tel" placeholder="Opcionalno" formControlName="phone" autocomplete="tel" />
+    </div>
+    <div class="field">
+      <label for="staff-email">Email</label>
+      <input id="staff-email" type="email" placeholder="Opcionalno" formControlName="email" autocomplete="email" />
+    </div>
     @if (editingId) {
       <label class="active-box"><input type="checkbox" formControlName="isActive" /> Aktivan</label>
     }

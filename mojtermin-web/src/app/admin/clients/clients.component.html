@@ -12,26 +12,26 @@
 
   <form class="form-grid" [formGroup]="form" (ngSubmit)="save()">
     <div class="field">
-      <label for="client-full-name" class="sr-only">Ime i prezime</label>
-      <input id="client-full-name" placeholder="Ime i prezime" formControlName="fullName" maxlength="150" autocomplete="name" />
+      <label for="client-full-name">Ime i prezime <span class="req">*</span></label>
+      <input id="client-full-name" placeholder="npr. Ana Marković" formControlName="fullName" maxlength="150" autocomplete="name" />
       <small class="error">{{ fieldError('fullName') }}</small>
     </div>
 
     <div class="field">
-      <label for="client-phone" class="sr-only">Telefon</label>
-      <input id="client-phone" placeholder="Telefon" formControlName="phone" maxlength="30" autocomplete="tel" />
+      <label for="client-phone">Telefon <span class="req">*</span></label>
+      <input id="client-phone" placeholder="npr. +387 61 234 567" formControlName="phone" maxlength="30" autocomplete="tel" />
       <small class="error">{{ fieldError('phone') }}</small>
     </div>
 
     <div class="field">
-      <label for="client-email" class="sr-only">Email (opcionalno)</label>
-      <input id="client-email" placeholder="Email (opcionalno)" formControlName="email" type="email" autocomplete="email" />
+      <label for="client-email">Email</label>
+      <input id="client-email" placeholder="Opcionalno" formControlName="email" type="email" autocomplete="email" />
       <small class="error">&nbsp;</small>
     </div>
 
     <div class="field">
-      <label for="client-note" class="sr-only">Napomena (opcionalno)</label>
-      <input id="client-note" placeholder="Napomena (opcionalno)" formControlName="note" />
+      <label for="client-note">Napomena</label>
+      <input id="client-note" placeholder="Opcionalno" formControlName="note" />
       <small class="error">&nbsp;</small>
     </div>
 

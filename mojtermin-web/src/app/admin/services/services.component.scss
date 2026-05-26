@@ -77,17 +77,17 @@
 }
 
 .field-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
+  display: grid;
+  gap: 0.5rem;
   min-width: 0;
 }
 
 .field-label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
+  letter-spacing: 0.005em;
+  color: var(--text);
+  line-height: 1.4;
 }
 
 .field-error-slot {

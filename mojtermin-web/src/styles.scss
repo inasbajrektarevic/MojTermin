@@ -79,10 +79,12 @@ body {
   body .export-row label,
   body .staff-filter-label,
   body .page label:not(.sr-only) {
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.45;
-    letter-spacing: 0.01em;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.45 !important;
+    /* Register has a tighter letter-spacing + darker color */
+    letter-spacing: 0.005em !important;
+    color: var(--text) !important;
   }
 
   body .export-box h3,

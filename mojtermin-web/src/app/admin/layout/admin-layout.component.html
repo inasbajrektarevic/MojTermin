@@ -27,27 +27,37 @@
     </button>
   </header>
 
-  @if (navOpen) {
-    <button type="button" class="nav-backdrop" aria-label="Zatvori meni" (click)="closeNav()"></button>
-  }
+  <button
+    type="button"
+    class="nav-backdrop"
+    [class.is-visible]="navOpen"
+    [attr.aria-hidden]="!navOpen"
+    [attr.tabindex]="navOpen ? 0 : -1"
+    aria-label="Zatvori meni"
+    (click)="closeNav()"
+  ></button>
 
-  <nav id="admin-nav" class="top-nav" [class.is-open]="navOpen">
-    <a routerLink="dashboard" routerLinkActive="is-active" (click)="closeNav()">Dashboard</a>
-    <a routerLink="appointments" routerLinkActive="is-active" (click)="closeNav()">Termini</a>
-    <a routerLink="services" routerLinkActive="is-active" (click)="closeNav()">Usluge</a>
-    <a routerLink="staff" routerLinkActive="is-active" (click)="closeNav()">Zaposlenici</a>
-    <a routerLink="clients" routerLinkActive="is-active" (click)="closeNav()">Klijenti</a>
-    <a routerLink="working-hours" routerLinkActive="is-active" (click)="closeNav()">Radni sati</a>
-    <a routerLink="notifications" routerLinkActive="is-active" (click)="closeNav()">
-      Notifikacije
-      @if (pendingAppointments > 0) {
-        <span class="badge">{{ pendingAppointments }}</span>
-      }
-    </a>
-    <a routerLink="audit" routerLinkActive="is-active" (click)="closeNav()">Audit</a>
-    <a routerLink="business-profile" routerLinkActive="is-active" (click)="closeNav()">Profil</a>
-    <a [routerLink]="['/b', slug]" class="nav-public" (click)="closeNav()">Javna stranica</a>
-    <button type="button" class="nav-logout btn-secondary" (click)="logout()">Odjava</button>
+  <nav id="admin-nav" class="top-nav" [class.is-open]="navOpen" [attr.aria-hidden]="!navOpen">
+    <div class="nav-drawer-main">
+      <a routerLink="dashboard" routerLinkActive="is-active" (click)="closeNav()">Dashboard</a>
+      <a routerLink="appointments" routerLinkActive="is-active" (click)="closeNav()">Termini</a>
+      <a routerLink="services" routerLinkActive="is-active" (click)="closeNav()">Usluge</a>
+      <a routerLink="staff" routerLinkActive="is-active" (click)="closeNav()">Zaposlenici</a>
+      <a routerLink="clients" routerLinkActive="is-active" (click)="closeNav()">Klijenti</a>
+      <a routerLink="working-hours" routerLinkActive="is-active" (click)="closeNav()">Radni sati</a>
+      <a routerLink="notifications" routerLinkActive="is-active" (click)="closeNav()">
+        Notifikacije
+        @if (pendingAppointments > 0) {
+          <span class="badge">{{ pendingAppointments }}</span>
+        }
+      </a>
+      <a routerLink="audit" routerLinkActive="is-active" (click)="closeNav()">Audit</a>
+      <a routerLink="business-profile" routerLinkActive="is-active" (click)="closeNav()">Profil</a>
+    </div>
+    <div class="nav-drawer-footer">
+      <a [routerLink]="['/b', slug]" class="nav-public" (click)="closeNav()">Javna stranica</a>
+      <button type="button" class="nav-logout btn-secondary" (click)="logout()">Odjava</button>
+    </div>
   </nav>
 
   <main class="content">

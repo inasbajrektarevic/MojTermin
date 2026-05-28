@@ -75,6 +75,23 @@ td.actions {
 }
 
 @media (max-width: 640px) {
+  .staff-filter {
+    max-width: none;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1 1 auto;
+  }
+
   .timeoff-field-wide {
     grid-column: span 1;
   }

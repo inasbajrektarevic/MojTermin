@@ -62,7 +62,8 @@ tbody tr:hover {
 
 /* Form labels — same look as register-business / booking */
 .field,
-.field-stack {
+.field-stack,
+.filter-field {
   display: grid;
   gap: 0.5rem;
   min-width: 0;
@@ -91,6 +92,19 @@ tbody tr:hover {
 }
 
 @media (max-width: 720px) {
+  .field,
+  .field-stack,
+  .filter-field {
+    gap: 0.6rem;
+  }
+
+  .page input,
+  .page select,
+  .page textarea {
+    padding: 0.8rem 0.9rem;
+    border-radius: 11px;
+  }
+
   .field label:not(.sr-only):not(.active-box),
   .field-stack > .field-label,
   .field-label,

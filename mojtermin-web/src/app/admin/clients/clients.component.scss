@@ -2,24 +2,31 @@
 
 .toolbar {
   display: flex;
-  gap: 0.6rem;
-  align-items: center;
+  gap: 0.75rem;
+  align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .search-wrap {
-  flex: 1 1 320px;
+  flex: 1 1 280px;
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .search {
   width: 100%;
   max-width: 420px;
-  margin-bottom: 0.85rem;
 }
 
 .export-btn {
-  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+  min-width: min(100%, 11rem);
+  padding: 0.72rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -33,14 +40,68 @@
 
 .error {
   color: #b42318;
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   min-height: 0.95rem;
-  line-height: 1;
+  line-height: 1.35;
 }
 
 .actions {
   grid-column: 1 / -1;
   display: flex;
-  gap: 0.5rem;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.actions button[type='submit'] {
+  min-width: min(100%, 14rem);
+  padding: 0.72rem 1.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.actions .btn-secondary {
+  padding: 0.72rem 1.15rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .search-wrap {
+    flex: none;
+    width: 100%;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .export-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    font-size: 1rem;
+    justify-content: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .actions button {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+  }
 }

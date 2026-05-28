@@ -2,8 +2,8 @@
   <h1>Klijenti</h1>
   <div class="toolbar">
     <div class="search-wrap">
-      <label for="client-search" class="sr-only">Pretraga klijenata</label>
-      <input id="client-search" name="query" class="search" [(ngModel)]="query" placeholder="Pretraga ime/telefon/email" />
+      <label for="client-search" class="staff-filter-label">Pretraga klijenata</label>
+      <input id="client-search" name="query" class="search" [(ngModel)]="query" placeholder="Ime, telefon ili email" />
     </div>
     <button type="button" class="btn-secondary export-btn" [disabled]="exporting" (click)="exportCsv()">
       {{ exporting ? 'Izvoz...' : 'Izvezi CSV' }}

@@ -56,24 +56,44 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.refreshPendingCount();
 
     this.navCloseSub = this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
-      this.navOpen = false;
+      this.closeNav();
     });
   }
 
   toggleNav(): void {
     this.navOpen = !this.navOpen;
+    this.syncBodyScrollLock();
   }
 
   closeNav(): void {
     this.navOpen = false;
+    this.syncBodyScrollLock();
   }
 
   ngOnDestroy(): void {
     this.stopPolling();
     this.navCloseSub?.unsubscribe();
+    this.setBodyScrollLock(false);
     if (this.visibilityHandler && typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', this.visibilityHandler);
     }
+  }
+
+  /** Prevent background page scroll while the mobile drawer is open. */
+  private syncBodyScrollLock(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    this.setBodyScrollLock(isMobile && this.navOpen);
+  }
+
+  private setBodyScrollLock(locked: boolean): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+    document.body.style.overflow = locked ? 'hidden' : '';
+    document.body.style.overscrollBehavior = locked ? 'none' : '';
   }
 
   logout(): void {

@@ -13,12 +13,15 @@
   gap: 0.75rem;
   padding: 0.75rem max(1rem, env(safe-area-inset-left, 0));
   padding-right: max(1rem, env(safe-area-inset-right, 0));
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0));
   background: var(--nav-glass);
   border-bottom: 1px solid var(--border-soft);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 30;
+  box-sizing: border-box;
+  min-height: 3.5rem;
 }
 
 .admin-header-brand {
@@ -153,6 +156,10 @@
 }
 
 @media (max-width: 900px) {
+  .admin-shell {
+    --admin-mobile-header-h: 3.5rem;
+  }
+
   .admin-header {
     display: flex;
     box-sizing: border-box;
@@ -160,29 +167,49 @@
 
   .nav-backdrop {
     display: block;
+    touch-action: none;
   }
 
   .admin-shell:not(.nav-open) .nav-backdrop {
     display: none;
   }
 
+  .admin-shell.nav-open {
+    overflow: hidden;
+    max-width: 100vw;
+  }
+
+  .admin-shell.nav-open .content {
+    overflow: hidden;
+    touch-action: none;
+  }
+
   .top-nav {
     display: none;
     position: fixed;
-    top: 3.35rem;
+    top: calc(var(--admin-mobile-header-h) + env(safe-area-inset-top, 0));
     left: 0;
     right: 0;
-    bottom: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: calc(100dvh - var(--admin-mobile-header-h) - env(safe-area-inset-top, 0));
+    max-height: calc(100dvh - var(--admin-mobile-header-h) - env(safe-area-inset-top, 0));
+    bottom: auto;
     flex-direction: column;
     align-items: stretch;
     gap: 0.35rem;
-    padding: 1rem max(1rem, env(safe-area-inset-left, 0)) 1.5rem;
+    padding: 0.85rem max(1rem, env(safe-area-inset-left, 0))
+      max(1.25rem, calc(1rem + env(safe-area-inset-bottom, 0)));
     padding-right: max(1rem, env(safe-area-inset-right, 0));
+    overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     border-bottom: none;
     border-top: 1px solid var(--border-soft);
     background: var(--surface);
     z-index: 25;
+    box-sizing: border-box;
   }
 
   .top-nav.is-open {
@@ -191,23 +218,36 @@
 
   .top-nav a,
   .top-nav .nav-logout {
+    display: flex;
+    align-items: center;
     width: 100%;
+    max-width: 100%;
     justify-content: flex-start;
     padding: 0.75rem 0.9rem;
     font-size: 1rem;
-    min-height: 44px;
+    min-height: 48px;
     box-sizing: border-box;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .top-nav a .badge {
+    margin-left: auto;
+    flex-shrink: 0;
   }
 
   .nav-logout {
     margin-left: 0;
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
     border: 1px solid var(--border);
+    width: 100%;
   }
 
   .content {
     padding: 0.85rem max(0.75rem, env(safe-area-inset-left, 0)) 1.5rem;
     padding-right: max(0.75rem, env(safe-area-inset-right, 0));
+    max-width: 100%;
+    overflow-x: hidden;
   }
 }
 

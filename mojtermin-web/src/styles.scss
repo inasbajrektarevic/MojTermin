@@ -82,7 +82,8 @@ body {
   body .timeoff-lbl,
   body .page label:not(.sr-only),
   body .admin-shell label.field-label,
-  body .login-page .field-label {
+  body .login-page .field-label,
+  body .booking-form .field > label {
     font-size: 1.16rem !important;
     font-weight: 700 !important;
     line-height: 1.5 !important;

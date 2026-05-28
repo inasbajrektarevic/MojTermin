@@ -20,8 +20,22 @@
 
 .actions {
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.55rem;
   grid-column: 1 / -1;
+  align-items: stretch;
+}
+
+.actions button[type='submit'] {
+  min-width: min(100%, 14rem);
+  padding: 0.72rem 1.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.actions .btn-secondary {
+  padding: 0.72rem 1.15rem;
+  font-size: 0.95rem;
 }
 
 .active-box {
@@ -85,11 +99,14 @@ td.actions {
   }
 
   .actions {
+    flex-direction: column;
     width: 100%;
   }
 
   .actions button {
-    flex: 1 1 auto;
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
   }
 
   .timeoff-field-wide {

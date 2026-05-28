@@ -1,15 +1,19 @@
 <section class="page">
   <h1>Termini</h1>
   <div class="filters">
-    <label for="appt-search" class="sr-only">Pretraga termina</label>
-    <input id="appt-search" name="query" [(ngModel)]="query" placeholder="Pretraga klijent/usluga/status" />
-    <label for="appt-status" class="sr-only">Status termina</label>
-    <select id="appt-status" name="status" [(ngModel)]="statusFilter">
-      <option value="">Svi statusi</option>
-      <option value="Confirmed">Potvrdjen</option>
-      <option value="Cancelled">Otkazan</option>
-      <option value="Completed">Zavrsen</option>
-    </select>
+    <div class="filter-field">
+      <label for="appt-search">Pretraga</label>
+      <input id="appt-search" name="query" [(ngModel)]="query" placeholder="Klijent, usluga ili status" />
+    </div>
+    <div class="filter-field">
+      <label for="appt-status">Status</label>
+      <select id="appt-status" name="status" [(ngModel)]="statusFilter">
+        <option value="">Svi statusi</option>
+        <option value="Confirmed">Potvrdjen</option>
+        <option value="Cancelled">Otkazan</option>
+        <option value="Completed">Zavrsen</option>
+      </select>
+    </div>
   </div>
 
   <div class="table-wrap">

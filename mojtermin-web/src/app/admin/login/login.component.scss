@@ -73,17 +73,17 @@
 .field-label {
   display: block;
   width: 100%;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.02rem;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: 0.005em;
-  line-height: 1.4;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
 }
 
 @media (max-width: 640px) {
   .field-label {
-    font-size: 1.08rem;
-    line-height: 1.45;
+    font-size: 1.2rem;
+    line-height: 1.5;
   }
 
   .login-card {
@@ -95,6 +95,8 @@
   width: 100%;
   background: var(--surface-soft);
   box-sizing: border-box;
+  padding: 0.78rem 0.9rem;
+  border-radius: 11px;
 }
 
 .error {

@@ -73,14 +73,15 @@ tbody tr:hover {
 .field-label,
 .staff-filter-label,
 .timeoff-lbl,
-.export-row label {
+.export-row label,
+.filter-field > label {
   display: block;
   width: 100%;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: 0.005em;
-  line-height: 1.4;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
 }
 
 .field label .req,
@@ -95,8 +96,9 @@ tbody tr:hover {
   .field-label,
   .staff-filter-label,
   .timeoff-lbl,
-  .export-row label {
-    font-size: 1.08rem;
-    line-height: 1.45;
+  .export-row label,
+  .filter-field > label {
+    font-size: 1.16rem;
+    line-height: 1.5;
   }
 }

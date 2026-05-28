@@ -2,20 +2,30 @@
   <h1>Audit log</h1>
 
   <div class="filters">
-    <label for="audit-resource" class="sr-only">Resource tip</label>
-    <input id="audit-resource" name="resourceType" [(ngModel)]="resourceType" placeholder="resourceType (npr. client)" (ngModelChange)="load()" />
+    <div class="filter-field">
+      <label for="audit-resource">Tip resursa</label>
+      <input id="audit-resource" name="resourceType" [(ngModel)]="resourceType" placeholder="npr. client" (ngModelChange)="load()" />
+    </div>
 
-    <label for="audit-action" class="sr-only">Akcija</label>
-    <input id="audit-action" name="action" [(ngModel)]="action" placeholder="action (npr. update)" (ngModelChange)="load()" />
+    <div class="filter-field">
+      <label for="audit-action">Akcija</label>
+      <input id="audit-action" name="action" [(ngModel)]="action" placeholder="npr. update" (ngModelChange)="load()" />
+    </div>
 
-    <label for="audit-from" class="sr-only">Od datuma</label>
-    <input id="audit-from" name="fromDate" type="date" [(ngModel)]="fromDate" (ngModelChange)="load()" />
+    <div class="filter-field">
+      <label for="audit-from">Od datuma</label>
+      <input id="audit-from" name="fromDate" type="date" [(ngModel)]="fromDate" (ngModelChange)="load()" />
+    </div>
 
-    <label for="audit-to" class="sr-only">Do datuma</label>
-    <input id="audit-to" name="toDate" type="date" [(ngModel)]="toDate" (ngModelChange)="load()" />
+    <div class="filter-field">
+      <label for="audit-to">Do datuma</label>
+      <input id="audit-to" name="toDate" type="date" [(ngModel)]="toDate" (ngModelChange)="load()" />
+    </div>
 
-    <label for="audit-limit" class="sr-only">Broj zapisa</label>
-    <input id="audit-limit" name="limit" type="number" min="1" max="300" placeholder="Broj zapisa" [(ngModel)]="limit" (ngModelChange)="load()" />
+    <div class="filter-field">
+      <label for="audit-limit">Broj zapisa</label>
+      <input id="audit-limit" name="limit" type="number" min="1" max="300" placeholder="npr. 100" [(ngModel)]="limit" (ngModelChange)="load()" />
+    </div>
   </div>
 
   <div class="table-wrap">

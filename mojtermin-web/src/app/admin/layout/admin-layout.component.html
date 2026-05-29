@@ -1,4 +1,8 @@
-<div class="admin-shell" [class.nav-open]="navOpen">
+<div
+  class="admin-shell"
+  [class.nav-open]="navOpen"
+  [style.--menu-vh.px]="navOpen ? menuViewportPx : null"
+>
   <header class="admin-header">
     <div class="admin-header-brand">
       <span class="admin-logo">MojTermin</span>
@@ -26,6 +30,11 @@
       <span>{{ navOpen ? 'Zatvori' : 'Meni' }}</span>
     </button>
   </header>
+
+  <div class="nav-mobile-actions" [class.is-visible]="navOpen" [attr.aria-hidden]="!navOpen">
+    <a [routerLink]="['/b', slug]" class="nav-public" (click)="closeNav()">Javna stranica</a>
+    <button type="button" class="nav-logout btn-secondary" (click)="logout()">Odjava</button>
+  </div>
 
   <button
     type="button"

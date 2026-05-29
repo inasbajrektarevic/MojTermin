@@ -16,11 +16,13 @@ import { ToastService } from '../../core/services/toast.service';
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly slug: string;
   navOpen = false;
+  menuViewportPx: number | null = null;
   pendingAppointments = 0;
   private lastPendingAppointments: number | null = null;
   private pollingSub?: Subscription;
   private navCloseSub?: Subscription;
   private visibilityHandler?: () => void;
+  private viewportSyncHandler?: () => void;
 
   constructor(
     private readonly authService: AuthService,
@@ -62,15 +64,25 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   toggleNav(): void {
     this.navOpen = !this.navOpen;
+    if (this.navOpen) {
+      queueMicrotask(() => this.syncMenuViewport());
+      this.attachViewportSync();
+    } else {
+      this.detachViewportSync();
+      this.menuViewportPx = null;
+    }
   }
 
   closeNav(): void {
     this.navOpen = false;
+    this.detachViewportSync();
+    this.menuViewportPx = null;
   }
 
   ngOnDestroy(): void {
     this.stopPolling();
     this.navCloseSub?.unsubscribe();
+    this.detachViewportSync();
     if (this.visibilityHandler && typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', this.visibilityHandler);
     }
@@ -84,6 +96,41 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  /** Real visible height on mobile browsers (Samsung/Brave address bar). */
+  private syncMenuViewport(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const height = window.visualViewport?.height ?? window.innerHeight;
+    this.menuViewportPx = Math.round(height);
+  }
+
+  private attachViewportSync(): void {
+    if (typeof window === 'undefined' || this.viewportSyncHandler) {
+      return;
+    }
+    this.viewportSyncHandler = () => {
+      if (this.navOpen) {
+        this.syncMenuViewport();
+      }
+    };
+    window.visualViewport?.addEventListener('resize', this.viewportSyncHandler);
+    window.visualViewport?.addEventListener('scroll', this.viewportSyncHandler);
+    window.addEventListener('resize', this.viewportSyncHandler);
+    window.addEventListener('orientationchange', this.viewportSyncHandler);
+  }
+
+  private detachViewportSync(): void {
+    if (typeof window === 'undefined' || !this.viewportSyncHandler) {
+      return;
+    }
+    window.visualViewport?.removeEventListener('resize', this.viewportSyncHandler);
+    window.visualViewport?.removeEventListener('scroll', this.viewportSyncHandler);
+    window.removeEventListener('resize', this.viewportSyncHandler);
+    window.removeEventListener('orientationchange', this.viewportSyncHandler);
+    this.viewportSyncHandler = undefined;
   }
 
   private startPolling(): void {

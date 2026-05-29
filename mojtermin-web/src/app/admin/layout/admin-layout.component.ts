@@ -17,6 +17,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   readonly slug: string;
   navOpen = false;
   menuViewportPx: number | null = null;
+  menuBottomPadPx: number | null = null;
   pendingAppointments = 0;
   private lastPendingAppointments: number | null = null;
   private pollingSub?: Subscription;
@@ -70,6 +71,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     } else {
       this.detachViewportSync();
       this.menuViewportPx = null;
+      this.menuBottomPadPx = null;
     }
   }
 
@@ -77,6 +79,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.navOpen = false;
     this.detachViewportSync();
     this.menuViewportPx = null;
+    this.menuBottomPadPx = null;
   }
 
   ngOnDestroy(): void {
@@ -98,13 +101,20 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Real visible height on mobile browsers (Samsung/Brave address bar). */
+  /** Real visible height + bottom inset for mobile browser chrome (Samsung/Brave). */
   private syncMenuViewport(): void {
     if (typeof window === 'undefined') {
       return;
     }
-    const height = window.visualViewport?.height ?? window.innerHeight;
+    const vv = window.visualViewport;
+    const height = vv?.height ?? window.innerHeight;
     this.menuViewportPx = Math.round(height);
+
+    const browserChrome = vv
+      ? Math.max(0, window.innerHeight - vv.height - (vv.offsetTop ?? 0))
+      : 0;
+    // Extra tap room so last items clear bottom toolbar / floating widgets
+    this.menuBottomPadPx = Math.round(Math.max(88, browserChrome + 40));
   }
 
   private attachViewportSync(): void {

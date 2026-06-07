@@ -54,3 +54,31 @@ h1 {
     box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
   }
 }
+
+@media (max-width: 480px) {
+  .not-found {
+    min-height: 100dvh;
+    padding: 1.5rem max(1rem, env(safe-area-inset-left, 0));
+    padding-right: max(1rem, env(safe-area-inset-right, 0));
+  }
+
+  .not-found-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .not-found-code {
+    font-size: 3.5rem;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+  }
+
+  .not-found-cta {
+    width: 100%;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

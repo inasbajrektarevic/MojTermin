@@ -1,0 +1,67 @@
+@mixin auth-flow-mobile {
+  @media (max-width: 480px) {
+    .page {
+      padding: 1.5rem max(1rem, env(safe-area-inset-left, 0)) 2rem;
+      padding-right: max(1rem, env(safe-area-inset-right, 0));
+    }
+
+    .card,
+    .verify-card {
+      padding: 1.5rem 1.1rem 1.25rem;
+    }
+
+    .field-label,
+    .resend-label {
+      max-width: none;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .field-input,
+    .input-wrap,
+    .resend-input,
+    .recovery-email,
+    .error {
+      max-width: none;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+    }
+
+    .reveal-btn {
+      width: 44px;
+      height: 44px;
+      right: 0.35rem;
+    }
+
+    .details {
+      max-width: none;
+      padding: 0.85rem 1rem;
+    }
+
+    .detail-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+    }
+
+    .detail-value {
+      text-align: left;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      width: 100%;
+    }
+
+    .danger-btn {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}

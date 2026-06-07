@@ -1,11 +1,14 @@
 .toast-wrap {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: max(1rem, env(safe-area-inset-top, 0));
+  right: max(1rem, env(safe-area-inset-right, 0));
+  left: max(1rem, env(safe-area-inset-left, 0));
   z-index: 9999;
   display: grid;
   gap: 0.5rem;
-  width: min(360px, 90vw);
+  width: auto;
+  max-width: min(360px, calc(100vw - 2rem));
+  margin-left: auto;
 }
 
 .toast {

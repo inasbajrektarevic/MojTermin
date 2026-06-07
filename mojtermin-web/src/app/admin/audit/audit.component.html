@@ -28,12 +28,14 @@
     </div>
   </div>
 
-  <div class="table-wrap">
-    @if (loading) {
-      <p>Učitavanje audit logova...</p>
-    } @else if (loadError) {
-      <p class="error">{{ loadError }}</p>
-    } @else {
+  @if (loading) {
+    <p>Učitavanje audit logova...</p>
+  } @else if (loadError) {
+    <p class="error">{{ loadError }}</p>
+  } @else if (!rows.length) {
+    <p class="empty-state">Nema audit zapisa za prikaz.</p>
+  } @else {
+    <div class="table-wrap desktop-table">
       <table>
         <thead>
           <tr>
@@ -45,26 +47,50 @@
           </tr>
         </thead>
         <tbody>
-          @if (rows.length) {
-            @for (row of rows; track row.id) {
-              <tr>
-                <td>{{ formatCreatedAt(row.createdAtUtc) }}</td>
-                <td>
-                  <div>{{ row.actorName }}</div>
-                  <small>{{ row.actorEmail }}</small>
-                </td>
-                <td><code>{{ row.action }}</code></td>
-                <td><code>{{ row.resourceType }}</code></td>
-                <td>{{ row.summary || '-' }}</td>
-              </tr>
-            }
-          } @else {
+          @for (row of rows; track row.id) {
             <tr>
-              <td colspan="5" class="empty-state">Nema audit zapisa za prikaz.</td>
+              <td>{{ formatCreatedAt(row.createdAtUtc) }}</td>
+              <td>
+                <div>{{ row.actorName }}</div>
+                <small>{{ row.actorEmail }}</small>
+              </td>
+              <td><code>{{ row.action }}</code></td>
+              <td><code>{{ row.resourceType }}</code></td>
+              <td>{{ row.summary || '-' }}</td>
             </tr>
           }
         </tbody>
       </table>
-    }
-  </div>
+    </div>
+
+    <div class="mobile-cards">
+      @for (row of rows; track row.id) {
+        <article class="record-card">
+          <div class="record-card-row">
+            <span class="record-card-label">Vrijeme</span>
+            <span class="record-card-value">{{ formatCreatedAt(row.createdAtUtc) }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Korisnik</span>
+            <span class="record-card-value">
+              {{ row.actorName }}
+              <small>{{ row.actorEmail }}</small>
+            </span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Akcija</span>
+            <span class="record-card-value"><code>{{ row.action }}</code></span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Resurs</span>
+            <span class="record-card-value"><code>{{ row.resourceType }}</code></span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Sažetak</span>
+            <span class="record-card-value">{{ row.summary || '—' }}</span>
+          </div>
+        </article>
+      }
+    </div>
+  }
 </section>

@@ -60,6 +60,88 @@ tbody tr:hover {
   background: #fbfcff;
 }
 
+/* Mobile card list (replaces wide tables below 720px) */
+.desktop-table {
+  display: block;
+}
+
+.mobile-cards {
+  display: none;
+}
+
+.record-card {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.85rem 0.9rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.record-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+}
+
+.record-card-label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.record-card-value {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+
+  code {
+    font-size: 0.82rem;
+    word-break: break-all;
+  }
+
+  small {
+    display: block;
+    font-weight: 500;
+    margin-top: 0.15rem;
+  }
+}
+
+.record-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border-soft);
+  margin-top: 0.15rem;
+
+  button {
+    flex: 1;
+    min-width: 6.5rem;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 720px) {
+  .desktop-table {
+    display: none !important;
+  }
+
+  .mobile-cards {
+    display: grid;
+    gap: 0.75rem;
+  }
+}
+
 /* Form labels — same look as register-business / booking */
 .field,
 .field-stack,

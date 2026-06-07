@@ -16,26 +16,27 @@
     </div>
   </div>
 
-  <div class="table-wrap">
-    @if (loading) {
-      <p>Učitavanje termina...</p>
-    } @else if (loadError) {
-      <p class="error">{{ loadError }}</p>
-    } @else {
-    <table>
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Vrijeme</th>
-          <th>Klijent</th>
-          <th>Zaposlenik</th>
-          <th>Usluga</th>
-          <th>Status</th>
-          <th>Akcije</th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (filteredAppointments.length) {
+  @if (loading) {
+    <p>Učitavanje termina...</p>
+  } @else if (loadError) {
+    <p class="error">{{ loadError }}</p>
+  } @else if (!filteredAppointments.length) {
+    <p class="empty-state">Nema termina za prikaz prema trenutnim filterima.</p>
+  } @else {
+    <div class="table-wrap desktop-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Vrijeme</th>
+            <th>Klijent</th>
+            <th>Zaposlenik</th>
+            <th>Usluga</th>
+            <th>Status</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
           @for (row of filteredAppointments; track row.id) {
             <tr>
               <td>{{ row.appointmentDate | date: 'dd.MM.yyyy' }}</td>
@@ -54,13 +55,45 @@
               </td>
             </tr>
           }
-        } @else {
-          <tr>
-            <td colspan="7" class="empty-state">Nema termina za prikaz prema trenutnim filterima.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-    }
-  </div>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mobile-cards">
+      @for (row of filteredAppointments; track row.id) {
+        <article class="record-card">
+          <div class="record-card-row">
+            <span class="record-card-label">Datum</span>
+            <span class="record-card-value">{{ row.appointmentDate | date: 'dd.MM.yyyy' }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Vrijeme</span>
+            <span class="record-card-value">{{ row.startTime }} – {{ row.endTime }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Klijent</span>
+            <span class="record-card-value">{{ row.clientName }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Zaposlenik</span>
+            <span class="record-card-value">{{ row.staffMemberName || '—' }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Usluga</span>
+            <span class="record-card-value">{{ row.serviceName }}</span>
+          </div>
+          <div class="record-card-row">
+            <span class="record-card-label">Status</span>
+            <span class="record-card-value">
+              <span class="status-badge" [class]="statusClass(row.status)">{{ statusLabel(row.status) }}</span>
+            </span>
+          </div>
+          <div class="record-card-actions">
+            <button type="button" class="btn-secondary" (click)="setStatus(row.id, 'cancel')" [disabled]="statusLoadingId === row.id || !canApplyAction(row.status, 'cancel')">Otkaži</button>
+            <button type="button" class="btn-danger" (click)="remove(row.id)" [disabled]="deletingId === row.id">Obriši</button>
+          </div>
+        </article>
+      }
+    </div>
+  }
 </section>

@@ -483,6 +483,17 @@
     padding: 1rem 1rem 1.15rem;
   }
 
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .services-submit {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+  }
+
   .services-list-head {
     padding: 0.85rem 1rem 0.7rem;
   }

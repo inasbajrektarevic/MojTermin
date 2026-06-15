@@ -332,18 +332,11 @@
    ============================================================ */
 .field {
   display: grid;
-  gap: 0.4rem;
+  gap: var(--field-gap, 0.4rem);
 
-  label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.005em;
-
-    .req {
-      color: #ef4444;
-      margin-left: 2px;
-    }
+  label .req {
+    color: #ef4444;
+    margin-left: 2px;
   }
 
   .hint {

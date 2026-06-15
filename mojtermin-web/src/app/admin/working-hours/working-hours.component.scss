@@ -79,10 +79,6 @@
   min-width: 0;
 }
 
-.day-fields .field label {
-  font-size: 0.95rem;
-}
-
 .closed-toggle {
   grid-column: 1 / -1;
   display: inline-flex;
@@ -145,10 +141,6 @@
 
   .day-fields {
     grid-template-columns: 1fr;
-  }
-
-  .day-fields .field label {
-    font-size: 1.08rem;
   }
 
   .closed-toggle {

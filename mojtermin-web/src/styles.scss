@@ -24,6 +24,12 @@ html {
   --success: #027a48;
   --shadow-sm: 0 2px 10px rgba(16, 24, 40, 0.06);
   --shadow-md: 0 10px 25px rgba(16, 24, 40, 0.08);
+  --label-fg: #475467;
+  --label-size: 0.8125rem;
+  --label-weight: 600;
+  --label-tracking: 0.02em;
+  --label-line: 1.35;
+  --field-gap: 0.4rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +51,7 @@ html {
     --success: #32d583;
     --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.35);
     --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --label-fg: #b8c0cc;
   }
 }
 
@@ -59,8 +66,59 @@ body {
   padding-right: env(safe-area-inset-right, 0);
 }
 
+/* Modern form labels — shared across admin, booking, auth */
+.field,
+.field-stack,
+.filter-field {
+  display: grid;
+  gap: var(--field-gap);
+  min-width: 0;
+}
+
+.field-label,
+.field > label:not(.sr-only):not(.active-box),
+.field > span.field-label,
+.field-stack > .field-label,
+.staff-filter-label,
+.timeoff-lbl,
+.export-row label,
+.resend-label,
+.page label.field-label:not(.sr-only),
+.login-page .field-label,
+.booking-form .field > label,
+.slug-field-label {
+  display: block;
+  width: 100%;
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  color: var(--label-fg);
+  letter-spacing: var(--label-tracking);
+  line-height: var(--label-line);
+}
+
+.filter-field > label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.field label .req,
+.field-label .req {
+  color: #ef4444;
+  margin-left: 2px;
+  font-weight: 700;
+}
+
 /* iOS: 16px+ inputs avoid auto-zoom; comfortable tap targets on phones */
 @media (max-width: 640px) {
+  :root {
+    --label-size: 0.875rem;
+    --field-gap: 0.45rem;
+  }
+
   input,
   select,
   textarea {
@@ -70,25 +128,6 @@ body {
   button,
   a.cta-btn {
     min-height: 44px;
-  }
-
-  /* Form labels — component SCSS often sets ~0.8rem; bump for phone readability */
-  body .field-label,
-  body .field label:not(.sr-only),
-  body .field > label:not(.sr-only),
-  body .field > span.field-label,
-  body .export-row label,
-  body .staff-filter-label,
-  body .timeoff-lbl,
-  body .page label:not(.sr-only),
-  body .admin-shell label.field-label,
-  body .login-page .field-label,
-  body .booking-form .field > label {
-    font-size: 1.16rem !important;
-    font-weight: 700 !important;
-    line-height: 1.5 !important;
-    letter-spacing: 0.01em !important;
-    color: var(--text) !important;
   }
 
   body .export-box h3,

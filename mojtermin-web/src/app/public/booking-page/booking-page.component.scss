@@ -204,12 +204,7 @@ form,
   }
 
   .field {
-    gap: 0.6rem;
-  }
-
-  .field label {
-    font-size: 1.16rem;
-    line-height: 1.5;
+    gap: var(--field-gap, 0.45rem);
   }
 
   .field input,
